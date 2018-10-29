@@ -10,9 +10,13 @@ class Category(models.Model):
 
 
 class Event(models.Model):
-    org = models.ForeignKey(Organization, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
     location = models.CharField(max_length=100)  # Better field type?
     is_free = models.BooleanField()
+    website = models.CharField(max_length=100) 
+    description = models.CharField(max_length=500) 
+    org = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    category = models.ManyToManyField(Category)
+
