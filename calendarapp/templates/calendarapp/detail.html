@@ -1,0 +1,10 @@
+<strong>Name: </strong> {{ event.name }}<br>
+<strong>Organization: </strong> {{ event.org }}<br>
+{% for cat in event.category.all %}
+   <strong>Category: </strong>{{ cat.name }}<br>
+{% endfor %}
+<strong>Start: </strong>{{ event.start_datetime }}<br>
+<strong>End: </strong>{{ event.end_datetime }}<br>
+<strong>Location: </strong>{{ event.location }}<br>
+<strong>Website: </strong>{{ event.website }}<br>
+<strong>Description: </strong>{{ event.description }}<br>

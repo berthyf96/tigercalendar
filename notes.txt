@@ -1,0 +1,7 @@
+to start server:
+python manage.py runserver
+
+can change port:
+ex) python manage.py runserver 8080
+
+enter http://127.0.0.1:*port*/ to browser to run 
