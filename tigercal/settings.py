@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [] # Change this later
 
 INSTALLED_APPS = [
     'calendarapp.apps.CalendarappConfig',
-    'schedule',
+    #'schedule',
     'djangobower',
     'django.contrib.admin',
     'django.contrib.auth',

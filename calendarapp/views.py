@@ -20,5 +20,9 @@ class DetailView(generic.DetailView):
     model = Event
     template_name = 'calendarapp/detail.html'
 
+class CalView(generic.ListView):
+	template_name = 'calendarapp/cal.html'
+	context_object_name = 'event_list'
+
 
 
