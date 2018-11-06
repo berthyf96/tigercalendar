@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['whatsroaring.herokuapp.com'] # Change this later
 INSTALLED_APPS = [
     'calendarapp.apps.CalendarappConfig',
     #'schedule',
-    #'djangobower',
+    'djangobower',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
