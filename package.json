@@ -6,8 +6,8 @@
         "bower": ">=1.8.0"
     },
     "scripts": {
-        "postinstall": "./node_modules/bower/bin/bower install",
         "prestart": "next build",
-  		"start": "next start -p ${PORT}",
+  		"start": "next start -p ${PORT}", 
+  		"postinstall": "./node_modules/bower/bin/bower install"
     }
 }
