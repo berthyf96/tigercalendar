@@ -1,5 +1,5 @@
 django
 gunicorn
 django-heroku
-djangobower
+django-bower
 requests
