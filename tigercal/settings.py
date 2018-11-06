@@ -46,9 +46,8 @@ INSTALLED_APPS = [
 ]
 
 BOWER_INSTALLED_APPS = (
-    'jquery',
-    'jquery-ui',
-    'bootstrap'
+    'jquery'
+    #'bootstrap'
 )
 
 MIDDLEWARE = [
