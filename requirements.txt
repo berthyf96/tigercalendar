@@ -3,3 +3,4 @@ gunicorn
 django-heroku
 django-bower
 requests
+session
