@@ -3,5 +3,4 @@ gunicorn==19.9.0
 django-heroku==0.3.1
 django-bower==5.2.0
 requests==2.20.0
-pip==18.1
 
