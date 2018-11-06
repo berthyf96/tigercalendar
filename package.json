@@ -8,6 +8,6 @@
     "scripts": {
         "prestart": "next build",
   		"start": "next start -p ${PORT}", 
-  		"postinstall": "./node_modules/bower/bin/bower install && bootstrap@3 install"
+  		"postinstall": "./node_modules/bower/bin/bower install"
     }
 }
