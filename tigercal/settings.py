@@ -23,9 +23,9 @@ BOWER_COMPONENTS_ROOT = 'os.path.dirname(os.path.dirname(os.path.abspath(__file_
 SECRET_KEY = 'p^vvyb&&8^)y=8k*t)kwv*zs1d09v%e7ep$)eu(!#%&4qtx3k&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [] # Change this later
+ALLOWED_HOSTS = [whatsroaring.herokuapp.com] # Change this later
 
 
 # Application definition
