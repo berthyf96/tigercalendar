@@ -1,0 +1,13 @@
+{
+    "name": "myApp",
+    "version": "0.1.0",
+    "dependencies": {
+        "angular": "latest",
+        "angular-bootstrap": "0.10.0",
+        "angular-cookies": "latest",
+        "angular-ui-router": "#master",
+        "auth0.js": "latest",
+        "auth0-angular": "latest",
+        "bootstrap": "3.0.3"
+    }
+}

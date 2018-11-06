@@ -1,6 +1,6 @@
 {
     "engines": {
-        "node": ">4.0.0"
+        "node": "10.13.0"
     },
     "dependencies": {
         "bower": ">=1.8.0"
