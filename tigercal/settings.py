@@ -26,10 +26,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = 'p^vvyb&&8^)y=8k*t)kwv*zs1d09v%e7ep$)eu(!#%&4qtx3k&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
+DEBUG = True
 
-#ALLOWED_HOSTS = ['https://whatsroaring.herokuapp.com/'] # Change this later
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://whatsroaring.herokuapp.com/'] # Change this later
+#ALLOWED_HOSTS = []
 
 # Application definition
 
