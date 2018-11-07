@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -84,16 +85,18 @@ WSGI_APPLICATION = 'tigercal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'events',
-        'USER': 'tigercalendar',
-        'PASSWORD': 'princeton',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+DATABASES = {}
+DATEBASES['default'] = dj_database_url.config(default = 'postgres://ejqrwmwbpdcnbk:adb8e48068e1302057c1a63cfe7895885d01146524692d8c2b309efc4aa3f76f@ec2-54-235-90-0.compute-1.amazonaws.com:5432/d8pqa57qe17rus')
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'events',
+#         'USER': 'tigercalendar',
+#         'PASSWORD': 'princeton',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
