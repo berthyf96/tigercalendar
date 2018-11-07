@@ -36,7 +36,7 @@ ALLOWED_HOSTS = ['https://whatsroaring.herokuapp.com/'] # Change this later
 INSTALLED_APPS = [
     'calendarapp.apps.CalendarappConfig',
     #'schedule',
-    #'djangobower',
+    'djangobower',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,10 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-# BOWER_INSTALLED_APPS = (
-#     'jquery',
-#     #'bootstrap'
-# )
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    #'bootstrap'
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
