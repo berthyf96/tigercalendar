@@ -1,0 +1,13 @@
+{
+    "engines": {
+        "node": "10.13.0"
+    },
+    "dependencies": {
+        "bower": ">=1.8.0"
+    },
+    "scripts": {
+        "prestart": "next build",
+  		"start": "next start -p ${PORT}", 
+  		"postinstall": "./node_modules/bower/bin/bower install"
+    }
+}

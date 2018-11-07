@@ -15,6 +15,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOWER_COMPONENTS_ROOT = 'os.path.dirname(os.path.dirname(os.path.abspath(__file__)))/components/'
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -23,10 +26,10 @@ BOWER_COMPONENTS_ROOT = 'os.path.dirname(os.path.dirname(os.path.abspath(__file_
 SECRET_KEY = 'p^vvyb&&8^)y=8k*t)kwv*zs1d09v%e7ep$)eu(!#%&4qtx3k&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [] # Change this later
-
+ALLOWED_HOSTS = ['https://whatsroaring.herokuapp.com/'] # Change this later
+#ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -44,8 +47,7 @@ INSTALLED_APPS = [
 
 BOWER_INSTALLED_APPS = (
     'jquery',
-    'jquery-ui',
-    'bootstrap'
+    #'bootstrap'
 )
 
 MIDDLEWARE = [
