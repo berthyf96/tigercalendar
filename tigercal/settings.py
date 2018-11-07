@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'tigercal.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {}
-DATEBASES['default'] = dj_database_url.config(default = 'postgres://ejqrwmwbpdcnbk:adb8e48068e1302057c1a63cfe7895885d01146524692d8c2b309efc4aa3f76f@ec2-54-235-90-0.compute-1.amazonaws.com:5432/d8pqa57qe17rus')
+DATABASES['default'] = dj_database_url.config(default = 'postgres://ejqrwmwbpdcnbk:adb8e48068e1302057c1a63cfe7895885d01146524692d8c2b309efc4aa3f76f@ec2-54-235-90-0.compute-1.amazonaws.com:5432/d8pqa57qe17rus')
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
