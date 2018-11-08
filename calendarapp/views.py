@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.views import generic
 from django.urls import reverse
 from cas import CASClient
+import os
 
 from .models import Event, Category, Organization
 
@@ -17,8 +18,18 @@ def home(request):
 	if request.GET.get('login'):
 		C = CASClient()
 		netid = C.Authenticate()
+		print("Content-Type: text/html")
+		print("")
+		import os
+		print("<b>hello from the other side</b>")
+		print(os.environ)
+		print("<p><b>done</b>") 
 
 	return render(request, 'calendarapp/home.html', {})
+
+def login(request):
+	C = CASClient()
+	netid = C.Authenticate()
 
 class CalView(generic.ListView):
     template_name = 'calendarapp/index.html'
@@ -30,6 +41,7 @@ class CalView(generic.ListView):
 class DetailView(generic.DetailView):
     model = Event
     template_name = 'calendarapp/detail.html'
+
 
 
 
