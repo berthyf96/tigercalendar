@@ -20,5 +20,5 @@ from django.urls import path
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    path('calendarapp/', include('calendarapp.urls')),
+    path(r'', include('calendarapp.urls')),
 ]
