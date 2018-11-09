@@ -20,7 +20,7 @@ def home(request):
 
 	if request.GET.get('login'):
 		print('hi')
-		CASTest.test()
+		# CASTest.test()
 
 	return render(request, 'calendarapp/home.html', {})
 
