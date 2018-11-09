@@ -9,21 +9,18 @@ from django.views import generic
 from django.urls import reverse
 from cas import CASClient
 import os
+import CASTest
+
 
 from .models import Event, Category, Organization
 
 # Create your views here.
 
 def home(request):
+
 	if request.GET.get('login'):
-		C = CASClient()
-		netid = C.Authenticate()
-		print("Content-Type: text/html")
-		print("")
-		import os
-		print("<b>hello from the other side</b>")
-		print(os.environ)
-		print("<p><b>done</b>") 
+		print('hi')
+		CASTest.test()
 
 	return render(request, 'calendarapp/home.html', {})
 

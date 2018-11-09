@@ -1,17 +1,20 @@
-import sys, os, cgi, urllib, re
+import sys, os, cgi, urllib.parse, re
+from requests.utils import requote_uri
 form = cgi.FieldStorage()
+
 class CASClient:
    def __init__(self):
       self.cas_url = 'https://fed.princeton.edu/cas/'
    def Authenticate(self):
-      # If the request contains a login ticket, try to validate it
-      if form.has_key('ticket'):
+      #If the request contains a login ticket, try to validate it
+      print(form)
+      if 'ticket' in form:
          netid = self.Validate(form['ticket'].value)
          if netid != None:
             return netid
       # No valid ticket; redirect the browser to the login page to get one
       login_url = self.cas_url + 'login' \
-         + '?service=' + urllib.quote(self.ServiceURL())
+         + '?service=' + urllib.parse.quote(self.ServiceURL())
       print('Location: ' + login_url)
       print('Status-line: HTTP/1.1 307 Temporary Redirect')
       print("")
@@ -25,7 +28,9 @@ class CASClient:
          return r[1].strip()
       return None
    def ServiceURL(self):
-      if os.environ.has_key('REQUEST_URI'):
+      print('service')
+      print(os.environ)
+      if 'REQUEST_URI' in os.environ:
          ret = 'http://' + os.environ['HTTP_HOST'] + os.environ['REQUEST_URI']
          ret = re.sub(r'ticket=[^&]*&?', '', ret)
          ret = re.sub(r'\?&?$|&$', '', ret)
