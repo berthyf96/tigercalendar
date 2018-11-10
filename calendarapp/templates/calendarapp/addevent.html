@@ -1,32 +1,43 @@
-<form action="searchform" method="get">
+<form method="post">
 
-  <table>
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
 
-    <tr>
-      <td><label for="dept">Dept:</label></td>
-      <td><input type="text" id="dept" name="dept"></td>
-    </tr>
 
-    <tr>
-      <td><label for="crsnum">Course Num:</label></td>
-      <td><input type="text" id="crsnum" name="crsnum"></td>
-    </tr>
+    <!-- <label>Organization:</label><br>
+    <select name="orgs" multiple>
+      <option value="PUFSC">PUFSC</option>
+      <option value="R20">R20</option>
+      <option value="VTone">VTone</option>
+    </select><br>
 
-    <tr>
-      <td><label for="area">Area:</label></td>
-      <td><input type="text" id="area" name="area"></td>
-    </tr>
+    <label>Category:</label><br>
+    <select name="categories" multiple required>
+      <option value="sports">Sports</option>
+      <option value="music">Music</option>
+      <option value="theatre">Theatre</option>
+    </select><br>
 
-    <tr>
-      <td><label for="title">Title:</label></td>
-      <td><input type="text" id="title" name="title"></td>
-    </tr>
+    <label>Name:</label><br>
+    <input type="text" name="name" required><br>
 
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Submit"></td>
-    </tr>
+    Start (date and time):<br>
+    <input type="datetime-local" name="starttime" required><br>
 
-  </table>
+    End (date and time):<br>
+    <input type="datetime-local" name="endttime" min="2000-01-02" required><br>
+
+    Location:<br>
+    <input type="text" name="location"><br>
+
+    <input type="checkbox" name="free" value="free">Free?<br>
+
+    Website:<br>
+    <input type="text" name="location"><br>
+
+    Description:<br>
+    <input type="text" name="location"><br>
+
+    <input type="submit" value="Submit"> -->
 
 </form>
