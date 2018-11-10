@@ -45,14 +45,28 @@ class AddEventView(generic.TemplateView):
 
 	def post(self, request):
 		form = AddEventForm()
+		post = form.save()
 		if form.is_valid():
+			print('valid')
 			post = form.save()
-			name = form.cleaned_data['name']
+
+
+			# org = form.cleaned_data['org']
+			# category = form.cleaned_data['category']
+			# name = form.cleaned_data['name']
+			# start_datetime = form.cleaned_data['start_datetime']
+			# end_datetime = form.cleaned_data['end_datetime']
+			# location = form.cleaned_data['location']
+			# is_free = form.cleaned_data['is_free']
+			# website = form.cleaned_data['website']
+			# description = form.cleaned_data['description']
+
 			form = AddEventForm()
 			return redirect(addevent)
 
-		# args = {'form': form, 'name': name}
-		return render(request, self.template_name, {'form': form})
+		#args = {'form': form, 'name': name}
+		args = {'form': form}
+		return render(request, self.template_name, args)
 
 
 
