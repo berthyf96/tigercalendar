@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import _ssl;_ssl.PROTOCOL_SSLv23 = _ssl.PROTOCOL_SSLv3
+#import _ssl;_ssl.PROTOCOL_SSLv23 = _ssl.PROTOCOL_SSLv3
 
 
 from CASClient import CASClient
