@@ -20,13 +20,13 @@ def home(request):
 
 	if request.GET.get('login'):
 		print('hi')
-		# CASTest.test()
+		CASTest.test()
 
 	return render(request, 'calendarapp/home.html', {})
 
-def login(request):
-	C = CASClient()
-	netid = C.Authenticate()
+def addevent(request):
+
+	return render(request, 'calendarapp/addevent.html', {})
 
 class CalView(generic.ListView):
     template_name = 'calendarapp/index.html'
