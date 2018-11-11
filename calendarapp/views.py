@@ -12,7 +12,6 @@ import os
 import CASTest
 from .forms import AddEventForm
 
-
 from .models import Event, Category, Organization
 
 # Create your views here.
@@ -44,14 +43,17 @@ class AddEventView(generic.TemplateView):
 		return render(request, self.template_name, {'form': form})
 
 	def post(self, request):
-		form = AddEventForm()
-		post = form.save()
+		form = AddEventForm(request.POST)
 		if form.is_valid():
 			print('valid')
 			post = form.save()
+			form = AddEventForm()
+			return redirect(addevent)
+		else: 
+			print('errors')
+			print(form.errors)
 
-
-			# org = form.cleaned_data['org']
+		# org = form.cleaned_data['org']
 			# category = form.cleaned_data['category']
 			# name = form.cleaned_data['name']
 			# start_datetime = form.cleaned_data['start_datetime']
@@ -61,10 +63,9 @@ class AddEventView(generic.TemplateView):
 			# website = form.cleaned_data['website']
 			# description = form.cleaned_data['description']
 
-			form = AddEventForm()
-			return redirect(addevent)
+		
 
-		#args = {'form': form, 'name': name}
+			#args = {'form': form, 'name': name}
 		args = {'form': form}
 		return render(request, self.template_name, args)
 

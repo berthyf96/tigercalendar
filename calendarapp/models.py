@@ -9,6 +9,7 @@
 
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from datetime import datetime    
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -26,15 +27,16 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+DEFAULT_ID = 1
 
 class Event(models.Model):
-    org = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    category = models.ManyToManyField(Category)
+    org = models.ForeignKey(Organization, on_delete=models.CASCADE, default=DEFAULT_ID)
+    category = models.ManyToManyField(Category, default=DEFAULT_ID)
     name = models.CharField(max_length=100)
-    start_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField()
+    start_datetime = models.DateTimeField(default=datetime.now)
+    end_datetime = models.DateTimeField(default=datetime.now)
     location = models.CharField(max_length=100, null=True, blank=True)  # Better field type?
-    is_free = models.BooleanField()
+    is_free = models.BooleanField(default=False)
     website = models.CharField(max_length=200, null=True, blank=True) 
     description = models.CharField(max_length=500, null=True, blank=True) 
 
