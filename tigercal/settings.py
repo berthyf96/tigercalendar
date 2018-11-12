@@ -36,7 +36,7 @@ DEBUG = True
 
 #ALLOWED_HOSTS = ['*']
 #ALLOWED_HOSTS = ['.herokuapp.com'] # Change this later
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['whatsroaring.herokuapp.com']
 
 # Application definition
 
