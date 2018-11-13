@@ -4,11 +4,10 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.views import generic
 from django.urls import reverse
-from django.core.serializers import serialize
-from cas import CASClient
+from CASClient import CASClient
 import os
 import CASTest
 from .forms import AddEventForm
@@ -16,24 +15,18 @@ from .forms import AddEventForm
 from .models import Event, Category, Organization
 
 # Create your views here.
-
 def home(request):
 
 	if request.GET.get('login'):
-		print('hi')
-		CASTest.test()
+		cas = CASClient(request)
+		return cas.Authenticate()
 
 	return render(request, 'calendarapp/home.html', {})
-
-def getEvents(request):
-    eventsJson = serialize('json', Event.objects.all())
-    data = {'Events_JSON': eventsJson}
-    return JsonResponse(data)
 
 class CalView(generic.ListView):
     template_name = 'calendarapp/index.html'
     context_object_name = 'event_list'
-    
+
     def get_queryset(self):
         return Event.objects.all()
 
@@ -55,7 +48,7 @@ class AddEventView(generic.TemplateView):
 			post = form.save()
 			form = AddEventForm()
 			return redirect(addevent)
-		else: 
+		else:
 			print('errors')
 			print(form.errors)
 
@@ -69,15 +62,7 @@ class AddEventView(generic.TemplateView):
 			# website = form.cleaned_data['website']
 			# description = form.cleaned_data['description']
 
-		
 
 			#args = {'form': form, 'name': name}
 		args = {'form': form}
 		return render(request, self.template_name, args)
-
-
-
-
-
-
-
