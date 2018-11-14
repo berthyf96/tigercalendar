@@ -9,12 +9,12 @@ class CASClient:
     def __init__(self, request):
         self.request = request
         self.uri = request.build_absolute_uri()
+
     def Authenticate(self):
-        #If the request contains a login ticket, try to validate it
         if 'ticket' in form:
             netid = self.Validate(form['ticket'].value)
             if netid != None:
-                return redirect(self.uri)
+                return redirect('/cal')
         # No valid ticket; redirect the browser to the login page to get one
         login_url = (CAS_URL + 'login' \
             + '?service=' + urllib.parse.quote(self.ServiceURL()))
