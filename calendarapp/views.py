@@ -4,9 +4,10 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import generic
 from django.urls import reverse
+from django.core.serializers import serialize
 from CASClient import CASClient
 import os
 import CASTest
@@ -22,6 +23,11 @@ def home(request):
 		return cas.Authenticate()
 
 	return render(request, 'calendarapp/home.html', {})
+
+def getEvents(request):
+    eventsJson = serialize('json', Event.objects.all())
+    data = {'Events_JSON': eventsJson}
+    return JsonResponse(data)
 
 class CalView(generic.ListView):
     template_name = 'calendarapp/index.html'
