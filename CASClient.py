@@ -35,7 +35,7 @@ class CASClient:
 
     def ServiceURL(self):
         if self.request:
-            ret = "http://whatsroaring-api.herokuapp.com/cal"#self.uri
+            ret = "http://whatsroaring.herokuapp.com/cal"#self.uri
             ret = re.sub(r'ticket=[^&]*&?', '', ret)
             ret = re.sub(r'\?&?$|&$', '', ret)
             return ret
