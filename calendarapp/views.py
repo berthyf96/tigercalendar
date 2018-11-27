@@ -12,7 +12,6 @@ from CASClient import CASClient
 import os
 import CASTest
 from .forms import AddEventForm, AddOrgForm
-
 from .models import Event, Category, Organization
 
 # Create your views here.
@@ -28,6 +27,16 @@ def getEvents(request):
     eventsJson = serialize('json', Event.objects.all())
     data = {'Events_JSON': eventsJson}
     return JsonResponse(data)
+
+def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free, website, description):
+	e = Event(org=org, category=cat, name=name, start_datetime=start_datetime, \
+		end_datetime=end_datetime, location=location, is_free=is_free, website=website, \
+		description=description)
+	e.save()
+
+def createOrganization(name)
+	o = Organization(name=name)
+	o.save()
 
 class CalView(generic.ListView):
     template_name = 'calendarapp/index.html'
@@ -63,7 +72,6 @@ class AddEventView(generic.TemplateView):
 		
 		args = {'form': form}
 		return render(request, self.template_name, args)
-
 
 class AddOrgView(generic.TemplateView):
 	template_name = 'calendarapp/addorg.html'
