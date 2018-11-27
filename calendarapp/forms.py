@@ -29,5 +29,10 @@ class AddOrgForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(AddOrgForm, self).__init__(*args, **kwargs)
 
+class FilterForm(forms.Form):
+    locations = forms.CharField()
+    is_free = forms.BooleanField()
+    orgs = forms.CharField()
+
 
 

@@ -11,7 +11,7 @@ from django.core.serializers import serialize
 from CASClient import CASClient
 import os
 import CASTest
-from .forms import AddEventForm, AddOrgForm
+from .forms import AddEventForm, AddOrgForm, FilterForm
 from .models import Event, Category, Organization
 
 # Create your views here.
@@ -23,10 +23,44 @@ def home(request):
 
 	return render(request, 'calendarapp/home.html', {})
 
+# class FormView(generic.TemplateView):
+# 	template_name = 'calendarapp/form.html'
+
+# 	def get(self, request):
+# 		form = FilterForm()
+# 		return render(request, self.template_name, {'form': form})
+
+# 	def post(self, request):
+
+# 		form = FilterForm(request.POST)
+
+# 		if form.is_valid():
+# 			locations = form.cleaned_data['locations']
+# 			is_free = form.cleaned_data['is_free']
+# 			orgs = form.cleaned_data['orgs']
+# 		else:
+# 			print('errors')
+# 			print(form.errors)
+
+# 		context={
+#     		'form': form,
+#     		'locations': locations,
+# 	    	'is_free': is_free,
+# 	    	'orgs': orgs,
+# 		}
+# 		return redirect('calendarapp:filter', context)
+
 def getEvents(request):
     eventsJson = serialize('json', Event.objects.all())
     data = {'Events_JSON': eventsJson}
     return JsonResponse(data)
+
+## THIS FILTERS THE EVENTS FOR LOCATIONS, FREE BOOLEAN, AND ORGANIZATIONS
+def getEventsFilter(locations,is_free,orgs):
+	event_list = Event.objects.filter(location__in=locations, is_free__exact=is_free,org__name__in=orgs)
+	eventsJson = serialize('json', event_list)
+	data = {'Events_JSON': eventsJson}
+	return JsonResponse(data)
 
 def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free, website, description):
 	e = Event(org=org, category=cat, name=name, start_datetime=start_datetime, \
@@ -34,7 +68,7 @@ def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free,
 		description=description)
 	e.save()
 
-def createOrganization(name)
+def createOrganization(name):
 	o = Organization(name=name)
 	o.save()
 
@@ -44,6 +78,19 @@ class CalView(generic.ListView):
 
     def get_queryset(self):
         return Event.objects.all()
+
+# class FilterView(generic.ListView):
+#     template_name = 'calendarapp/filter.html'
+#     context_object_name = 'event_list'
+
+#     def get_queryset(self):
+#     	locations=['Baker Rink']
+#     	is_free=False
+#     	orgs=['PUFSC']
+#     	event_list = Event.objects.filter(location__in=locations, is_free__exact=is_free,org__name__in=orgs)
+#     	return event_list
+#     	#return Event.objects.all()
+
 
 class DetailView(generic.DetailView):
     model = Event

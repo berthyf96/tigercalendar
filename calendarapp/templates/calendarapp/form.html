@@ -1,0 +1,20 @@
+<!-- <form action="filter">
+  {% csrf_token %}
+  Locations:<br>
+  <input type="text" name="locations">
+  <br>
+  Free?<br>
+  <input type="text" name="free">
+  <br>
+  Organizations:<br>
+  <input type="text" name="orgs">
+  <br><br>
+  <input type="submit" value="Submit">
+</form>  -->
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+
+</form>
