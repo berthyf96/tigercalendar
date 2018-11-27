@@ -21,5 +21,6 @@ class AddEventForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		super(AddEventForm, self).__init__(*args, **kwargs)
-		self.fields['start_datetime'].widget = widgets.AdminSplitDateTime()
-		self.fields['end_datetime'].widget = widgets.AdminSplitDateTime()
+		self.fields['start_datetime'].widget = forms.DateTimeInput(format='%m/%d/%Y %H:%M')
+		self.fields['end_datetime'].widget = forms.DateTimeInput(format='%m/%d/%Y %H:%M')
+
