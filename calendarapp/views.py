@@ -9,6 +9,7 @@ from django.views import generic
 from django.urls import reverse
 from django.core.serializers import serialize
 from CASClient import CASClient
+import json
 import os
 import CASTest
 from .forms import AddEventForm, AddOrgForm
@@ -24,9 +25,17 @@ def home(request):
 	return render(request, 'calendarapp/home.html', {})
 
 def getEvents(request):
-    eventsJson = serialize('json', Event.objects.all())
-    data = {'Events_JSON': eventsJson}
-    return JsonResponse(data)
+	selected_events = Event.objects.all()
+	location = None
+	# decode AJAX request, which should contain location request
+	if request.body.decode('utf-8'):
+		location = json.loads(request.body.decode('utf-8')).get('location')
+	if location:
+		selected_events = Event.objects.filter(location=location)
+	eventsJson = serialize('json', selected_events)
+	data = {'Events_JSON': eventsJson}
+	return JsonResponse(data)
+
 
 def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free, website, description):
 	e = Event(org=org, category=cat, name=name, start_datetime=start_datetime, \
@@ -34,7 +43,7 @@ def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free,
 		description=description)
 	e.save()
 
-def createOrganization(name)
+def createOrganization(name):
 	o = Organization(name=name)
 	o.save()
 
@@ -69,7 +78,7 @@ class AddEventView(generic.TemplateView):
 			print('errors')
 			print(form.errors)
 
-		
+
 		args = {'form': form}
 		return render(request, self.template_name, args)
 
@@ -92,6 +101,6 @@ class AddOrgView(generic.TemplateView):
 		else:
 			print('errors')
 			print(form.errors)
-		
+
 		args = {'form': form}
 		return render(request, self.template_name, args)
