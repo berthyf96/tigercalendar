@@ -9,6 +9,7 @@ from django.views import generic
 from django.urls import reverse
 from django.core.serializers import serialize
 from CASClient import CASClient
+import json
 import os
 import CASTest
 from .forms import AddEventForm, AddOrgForm, FilterForm
@@ -51,9 +52,17 @@ def home(request):
 # 		return redirect('calendarapp:filter', context)
 
 def getEvents(request):
-    eventsJson = serialize('json', Event.objects.all())
-    data = {'Events_JSON': eventsJson}
-    return JsonResponse(data)
+	selected_events = Event.objects.all()
+	location = None
+	# decode AJAX request, which should contain location request
+	if request.body.decode('utf-8'):
+		location = json.loads(request.body.decode('utf-8')).get('location')
+	if location:
+		selected_events = Event.objects.filter(location=location)
+	eventsJson = serialize('json', selected_events)
+	data = {'Events_JSON': eventsJson}
+	return JsonResponse(data)
+
 
 ## THIS FILTERS THE EVENTS FOR LOCATIONS, FREE BOOLEAN, AND ORGANIZATIONS
 def getEventsFilter(locations,is_free,orgs):
@@ -116,7 +125,7 @@ class AddEventView(generic.TemplateView):
 			print('errors')
 			print(form.errors)
 
-		
+
 		args = {'form': form}
 		return render(request, self.template_name, args)
 
@@ -139,6 +148,6 @@ class AddOrgView(generic.TemplateView):
 		else:
 			print('errors')
 			print(form.errors)
-		
+
 		args = {'form': form}
 		return render(request, self.template_name, args)
