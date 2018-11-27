@@ -11,7 +11,7 @@ from django.core.serializers import serialize
 from CASClient import CASClient
 import os
 import CASTest
-from .forms import AddEventForm
+from .forms import AddEventForm, AddOrgForm
 
 from .models import Event, Category, Organization
 
@@ -48,27 +48,42 @@ class AddEventView(generic.TemplateView):
 		return render(request, self.template_name, {'form': form})
 
 	def post(self, request):
+
 		form = AddEventForm(request.POST)
+
 		if form.is_valid():
 			print('valid')
-			post = form.save()
+			form.save()
 			form = AddEventForm()
-			return redirect(addevent)
+			return redirect('calendarapp:addevent')
 		else:
 			print('errors')
 			print(form.errors)
 
-		# org = form.cleaned_data['org']
-			# category = form.cleaned_data['category']
-			# name = form.cleaned_data['name']
-			# start_datetime = form.cleaned_data['start_datetime']
-			# end_datetime = form.cleaned_data['end_datetime']
-			# location = form.cleaned_data['location']
-			# is_free = form.cleaned_data['is_free']
-			# website = form.cleaned_data['website']
-			# description = form.cleaned_data['description']
+		
+		args = {'form': form}
+		return render(request, self.template_name, args)
 
 
-			#args = {'form': form, 'name': name}
+class AddOrgView(generic.TemplateView):
+	template_name = 'calendarapp/addorg.html'
+
+	def get(self, request):
+		form = AddOrgForm()
+		return render(request, self.template_name, {'form': form})
+
+	def post(self, request):
+
+		form = AddOrgForm(request.POST)
+
+		if form.is_valid():
+			print('valid')
+			form.save()
+			form = AddOrgForm()
+			return redirect('calendarapp:addorg')
+		else:
+			print('errors')
+			print(form.errors)
+		
 		args = {'form': form}
 		return render(request, self.template_name, args)
