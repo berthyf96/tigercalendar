@@ -71,11 +71,16 @@ def getEvents(request):
 
 ## THIS FILTERS THE EVENTS FOR LOCATIONS, FREE BOOLEAN, AND ORGANIZATIONS
 def getEventsFilter(request):
+	event_list = Event.objects.all()
 	locations = request.GET.get('locations')
 	locations_list = locations.split(',')
-	# is_free = request.GET.get('is_free')
+	eventtypes = request.GET.get('eventtypes')
+	eventtypes_list = eventtypes.split(',')
+	is_free = request.GET.get('is_free')
 	# orgs = request.GET.get('orgs')
-	event_list = Event.objects.filter(location__in=locations_list)
+	if (locations != ""):
+		event_list = Event.objects.filter(location__in=locations_list)
+
 	print(event_list)
 	eventsJson = serialize('json', event_list)
 	data = {'Events_JSON': eventsJson}
