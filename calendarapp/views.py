@@ -49,6 +49,13 @@ def home(request):
 # 		}
 # 		return redirect('calendarapp:filter', context)
 
+# Return name of organization given ID.
+def getOrgName(request, orgPk):
+    org = [Organization.objects.get(pk=orgPk)]
+    json = serialize('json', org)
+    data = {'data': json}
+    return JsonResponse(data)
+
 def getEvents(request):
 	selected_events = Event.objects.all()
 	# location = None

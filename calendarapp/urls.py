@@ -11,6 +11,7 @@ urlpatterns = [
 	path('addorg', views.AddOrgView.as_view(), name='addorg'),
     path('cal', views.CalView.as_view(), name='cal'),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('getOrgName/<int:orgPk>/', views.getOrgName, name='getOrgName'),
     path('getEvents', views.getEvents, name='getEvents'),
     path('getEventsFilter', views.getEventsFilter, name='getEventsFilter'),
 ]
