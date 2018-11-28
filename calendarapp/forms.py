@@ -1,6 +1,6 @@
 from django import forms
 from .models import Event, Organization
-from django.contrib.admin import widgets  
+from django.contrib.admin import widgets
 from django.forms import ModelForm
 # from datetimewidget.widgets import DateTimeWidget
 
@@ -29,10 +29,6 @@ class AddOrgForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(AddOrgForm, self).__init__(*args, **kwargs)
 
-class FilterForm(forms.Form):
-    locations = forms.CharField()
-    is_free = forms.BooleanField()
-    orgs = forms.CharField()
-
-
-
+# class FilterForm(forms.Form):
+#     locations = forms.CharField()
+#     is_free = forms.BooleanField()
