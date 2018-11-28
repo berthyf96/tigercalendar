@@ -24,6 +24,10 @@ def home(request):
 
 	return render(request, 'calendarapp/home.html', {})
 
+def login(request):
+    cas = CASClient(request)
+    return cas.Authenticate()
+    
 # class FormView(generic.TemplateView):
 # 	template_name = 'calendarapp/form.html'
 #

@@ -14,7 +14,7 @@ class CASClient:
         if 'ticket' in form:
             netid = self.Validate(form['ticket'].value)
             if netid != None:
-                return redirect('/cal')
+                return redirect('/?ticket=' + form['ticket'].value)
         # No valid ticket; redirect the browser to the login page to get one
         login_url = (CAS_URL + 'login' \
             + '?service=' + urllib.parse.quote(self.ServiceURL()))
@@ -35,7 +35,7 @@ class CASClient:
 
     def ServiceURL(self):
         if self.request:
-            ret = "http://whatsroaring-api.herokuapp.com/cal"#self.uri
+            ret = "http://whatsroaring-api.herokuapp.com/"#self.uri
             ret = re.sub(r'ticket=[^&]*&?', '', ret)
             ret = re.sub(r'\?&?$|&$', '', ret)
             return ret
