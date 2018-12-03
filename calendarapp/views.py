@@ -27,7 +27,7 @@ def home(request):
 def login(request):
     cas = CASClient(request)
     return cas.Authenticate()
-    
+
 # class FormView(generic.TemplateView):
 # 	template_name = 'calendarapp/form.html'
 #
@@ -60,30 +60,32 @@ def getOrgName(request, orgPk):
     data = {'data': json}
     return JsonResponse(data)
 
-def getEvents(request):
-	selected_events = Event.objects.all()
-	# location = None
-	# # decode AJAX request, which should contain location request
-	# if request.body.decode('utf-8'):
-	# 	location = json.loads(request.body.decode('utf-8')).get('location')
-	# if location:
-	# 	selected_events = Event.objects.filter(location=location)
-	eventsJson = serialize('json', selected_events)
-	data = {'Events_JSON': eventsJson}
-	return JsonResponse(data)
-
 
 ## THIS FILTERS THE EVENTS FOR LOCATIONS, FREE BOOLEAN, AND ORGANIZATIONS
-def getEventsFilter(request):
+def getEvents(request):
 	event_list = Event.objects.all()
-	locations = request.GET.get('locations')
-	locations_list = locations.split(',')
-	eventtypes = request.GET.get('eventtypes')
-	eventtypes_list = eventtypes.split(',')
+	locations_list = None
+	categories_list = None
+	is_free = None
+
+	locations = request.GET.get('locations') # is a string
+	if locations and locations != "":
+		locations_list = locations.split(',')
+
+	categories = request.GET.get('categories')
+	if categories and categories != "":
+		categories_list = categories.split(',')
+
 	is_free = request.GET.get('is_free')
-	# orgs = request.GET.get('orgs')
-	if (locations != ""):
-		event_list = Event.objects.filter(location__in=locations_list)
+	if is_free and is_free != "":
+		is_free = request.GET.get('is_free')
+
+	if (locations_list):
+		event_list = event_list.filter(location__in=locations_list)
+	if (categories_list):
+		event_list = event_list.filter(category__in=categories_list)
+	if (is_free and is_free == "true"):
+		event_list = event_list.filter(is_free__exact="True")
 
 	print(event_list)
 	eventsJson = serialize('json', event_list)
