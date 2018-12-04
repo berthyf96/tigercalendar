@@ -88,9 +88,47 @@ def getEvents(request):
 		event_list = event_list.filter(is_free__exact="True")
 
 	print(event_list)
+
 	eventsJson = serialize('json', event_list)
+	eventsJson = json.loads(eventsJson)
+
+	for i in range(0, len(eventsJson)):
+		# Should return org names, not org id's!
+		org_id = eventsJson[i]['fields']['org']
+		eventsJson[i]['fields']['org'] = Organization.objects.get(id=org_id).name
+
+		# Should return category names, not category id's!
+		categories = eventsJson[i]['fields']['category']
+		for j in range(0, len(categories)):
+			categories[j] = Category.objects.get(id=categories[j]).name
+
 	data = {'Events_JSON': eventsJson}
 	return JsonResponse(data)
+
+# return all organization names
+def getOrganizationNames(request):
+	org_names = Organization.objects.all().values_list('name', flat=True).distinct()
+	org_names = [org for org in org_names if org is not None]
+	orgNamesJson = serialize('json', org_names)
+	data = {'OrgNames_JSON': orgNamesJson}
+	return JsonResponse(data)
+
+# return all location names
+def getLocations(request):
+	locations = Event.objects.all().values_list('location', flat = True).distinct()
+	locations = [loc for loc in locations if loc is not None]
+	locJson = serialize('json', locations)
+	data = {'Location_JSON': locJson}
+	return JsonResponse(data)
+
+# return all categories
+def getCategories(request):
+	cat_names = Category.objects.all().values_list('name', flat = True).distinct()
+	cat_names = [cat for cat in cat_names if cat is not None]
+	catJson = serialize('json', cat_names)
+	data = {'Category_JSON': catJson}
+	return JsonResponse(data)
+
 
 def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free, website, description):
 	e = Event(org=org, category=cat, name=name, start_datetime=start_datetime, \
