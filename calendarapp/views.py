@@ -79,6 +79,10 @@ def getEvents(request):
 	categories = request.GET.get('categories')
 	if categories and categories != "":
 		categories_list = categories.split(',')
+	# comma-deliminated string with list of orgs
+	orgs = request.GET.get('orgs')
+	if orgs and orgs != "":
+		orgs_list = orgs.split(',')
 	# should be either empty string or 'true'
 	is_free = request.GET.get('is_free')
 	if is_free and is_free != "":
