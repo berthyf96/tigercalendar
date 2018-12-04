@@ -9,6 +9,7 @@ from django.views import generic
 from django.urls import reverse
 from django.core.serializers import serialize
 from CASClient import CASClient
+from datetime import datetime
 import json
 import os
 import CASTest
@@ -63,23 +64,65 @@ def getOrgName(request, orgPk):
 
 ## THIS FILTERS THE EVENTS FOR LOCATIONS, FREE BOOLEAN, AND ORGANIZATIONS
 def getEvents(request):
-	event_list = Event.objects.all()
 	locations_list = None
 	categories_list = None
 	is_free = None
+	org_list = None
+	start_date = None
+	end_date = None
 
-	locations = request.GET.get('locations') # is a string
+	# comma-deliminated string with list of locations
+	locations = request.GET.get('locations')
 	if locations and locations != "":
 		locations_list = locations.split(',')
-
+	# comma-deliminated string with list of categories
 	categories = request.GET.get('categories')
 	if categories and categories != "":
 		categories_list = categories.split(',')
-
+	# should be either empty string or 'true'
 	is_free = request.GET.get('is_free')
 	if is_free and is_free != "":
 		is_free = request.GET.get('is_free')
+	# comma-deliminated string containing date (Y,M,D), i.e. '2018,12,4'
+	start_date_request = request.GET.get('start_date')
+	if start_date_request and start_date_request != "":
+		start_date_list = start_date_request.split(',')
+		if len(start_date_list) == 3:
+			start_date = datetime.date(start_date_list[0],
+										start_date_list[1], start_date_list[2])
+	# comma-deliminated string containing date (Y,M,D), i.e. '2018,12,4'
+	end_date_request = request.GET.get('end_date')
+	if (end_date_request and end_date_request != ""):
+		end_date_list = end_date_request.split(',')
+		if len(end_date_list) == 3:
+			end_date = datetime.date(end_date_list[0], end_date_list[1],
+										end_date_list[2])
 
+	event_list = filterEvents(locations_list=locations_list, categories_list=categories_list,
+								org_list=org_list, is_free=is_free,
+								start_date=start_date, end_date=end_date)
+	print(event_list)
+
+	eventsJson = serialize('json', event_list)
+	# eventsJson = json.loads(eventsJson)
+
+	# for i in range(0, len(eventsJson)):
+	# 	# Should return org names, not org id's!
+	# 	org_id = eventsJson[i]['fields']['org']
+	# 	eventsJson[i]['fields']['org'] = Organization.objects.get(id=org_id).name
+	#
+	# 	# Should return category names, not category id's!
+	# 	categories = eventsJson[i]['fields']['category']
+	# 	for j in range(0, len(categories)):
+	# 		categories[j] = Category.objects.get(id=categories[j]).name
+
+	data = {'Events_JSON': eventsJson}
+	return JsonResponse(data)
+
+# return list of filtered events based on parameters
+def filterEvents(locations_list=None, categories_list=None, org_list=None,
+					is_free=None, start_date=None, end_date=None):
+	event_list = Event.objects.all()
 	if (locations_list):
 		event_list = event_list.filter(location__in=locations_list)
 	if (categories_list):
@@ -88,24 +131,9 @@ def getEvents(request):
 		event_list = event_list.filter(org__name__in=org_list)
 	if (is_free and is_free == "true"):
 		event_list = event_list.filter(is_free__exact="True")
-
-	print(event_list)
-
-	eventsJson = serialize('json', event_list)
-	eventsJson = json.loads(eventsJson)
-
-	for i in range(0, len(eventsJson)):
-		# Should return org names, not org id's!
-		org_id = eventsJson[i]['fields']['org']
-		eventsJson[i]['fields']['org'] = Organization.objects.get(id=org_id).name
-
-		# Should return category names, not category id's!
-		categories = eventsJson[i]['fields']['category']
-		for j in range(0, len(categories)):
-			categories[j] = Category.objects.get(id=categories[j]).name
-
-	data = {'Events_JSON': eventsJson}
-	return JsonResponse(data)
+	if (start_date and end_date):
+		event_list = event_list.filter(start_datetime__range=(start_date, end_date))
+	return event_list
 
 # return all organization names
 def getOrganizationNames(request):
