@@ -83,7 +83,9 @@ def getEvents(request):
 	if (locations_list):
 		event_list = event_list.filter(location__in=locations_list)
 	if (categories_list):
-		event_list = event_list.filter(category__in=categories_list)
+		event_list = event_list.filter(category__name__in=categories_list)
+	if (org_list):
+		event_list = event_list.filter(org__name__in=org_list)
 	if (is_free and is_free == "true"):
 		event_list = event_list.filter(is_free__exact="True")
 
