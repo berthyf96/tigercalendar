@@ -29,6 +29,14 @@ def login(request):
     cas = CASClient(request)
     return cas.Authenticate()
 
+def netid(request):
+	cas = CASClient(request)
+	netid = cas.Validate(request.GET.get('ticket'))
+	if netid == None: 
+		return HttpResponse("-")
+	else:
+		return HttpResponse(netid)
+
 # class FormView(generic.TemplateView):
 # 	template_name = 'calendarapp/form.html'
 #

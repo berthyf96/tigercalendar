@@ -14,7 +14,8 @@ class CASClient:
         if 'ticket' in form:
             netid = self.Validate(form['ticket'].value)
             if netid != None:
-                return redirect('/?ticket=' + form['ticket'].value)
+                return redirect('/?ticket=' 
+                                + urllib.parse.quote(form['ticket'].value))
         # No valid ticket; redirect the browser to the login page to get one
         login_url = (CAS_URL + 'login' \
             + '?service=' + urllib.parse.quote(self.ServiceURL()))
@@ -26,10 +27,10 @@ class CASClient:
 
     def Validate(self, ticket):
         val_url = (CAS_URL + "validate" + \
-            '?service=' + urllib.quote(self.ServiceURL()) + \
-            '&ticket=' + urllib.quote(ticket))
-        r = urllib.urlopen(val_url).readlines()   # returns 2 lines
-        if len(r) == 2 and re.match("yes", r[0]) != None:
+            '?service=' + urllib.parse.quote(self.ServiceURL()) + \
+            '&ticket=' + urllib.parse.quote(ticket))
+        r = urllib.request.urlopen(val_url).readlines()   # returns 2 lines
+        if len(r) == 2 and r[0].strip() == "yes":
             return r[1].strip()
         return None
 
