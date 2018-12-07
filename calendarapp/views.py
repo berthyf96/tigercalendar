@@ -203,6 +203,8 @@ def getCategories(request):
 # Takes in a string (user) and an event object (event)
 def addFavorite(request):
 	netid = request.GET.get('user')
+	if netid is None:
+		netid = 'rb25'
 	event = request.GET.get('event')
 
 	# User does not already exists...
