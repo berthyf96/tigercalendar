@@ -32,7 +32,7 @@ def login(request):
 def netid(request):
 	cas = CASClient(request)
 	netid = cas.Validate(request.GET.get('ticket'))
-	if netid == None: 
+	if netid == None:
 		return HttpResponse("-")
 	else:
 		return HttpResponse(netid)
@@ -89,7 +89,7 @@ def getEvents(request):
 	if categories and categories != "":
 		categories_list = categories.split(',')
 	# comma-deliminated string with list of orgs
-	orgs = request.GET.get('orgs')
+	orgs = request.GET.get('organizations')
 	if orgs and orgs != "":
 		orgs_list = orgs.split(',')
 	# should be either empty string or 'true'
@@ -116,7 +116,7 @@ def getEvents(request):
 										end_date_list[2])
 
 	event_list = filterEvents(locations_list=locations_list, categories_list=categories_list,
-								org_list=org_list, is_free=is_free, favorites = favorites,
+								org_list=org_list, is_free=is_free, favorites=favorites,
 								start_date=start_date, end_date=end_date)
 	print(event_list)
 
@@ -138,7 +138,7 @@ def getEvents(request):
 
 # return list of filtered events based on parameters
 def filterEvents(locations_list=None, categories_list=None, org_list=None,
-					is_free=None, start_date=None, end_date=None):
+					is_free=None, favorites=None,start_date=None, end_date=None):
 	event_list = Event.objects.all()
 	if (locations_list):
 		event_list = event_list.filter(location__in=locations_list)
@@ -157,28 +157,22 @@ def filterEvents(locations_list=None, categories_list=None, org_list=None,
 	return event_list
 
 # return all organization names
-def getOrganizationNames(request):
+def getOrganizations(request):
 	org_names = Organization.objects.all().values_list('name', flat=True).distinct()
 	org_names = [org for org in org_names if org is not None]
-	orgNamesJson = serialize('json', org_names)
-	data = {'OrgNames_JSON': orgNamesJson}
-	return JsonResponse(data)
+	return JsonResponse({'orgs':org_names})
 
 # return all location names
 def getLocations(request):
 	locations = Event.objects.all().values_list('location', flat = True).distinct()
 	locations = [loc for loc in locations if loc is not None]
-	locJson = serialize('json', locations)
-	data = {'Location_JSON': locJson}
-	return JsonResponse(data)
+	return JsonResponse({'locs':locations})
 
 # return all categories
 def getCategories(request):
 	cat_names = Category.objects.all().values_list('name', flat = True).distinct()
 	cat_names = [cat for cat in cat_names if cat is not None]
-	catJson = serialize('json', cat_names)
-	data = {'Category_JSON': catJson}
-	return JsonResponse(data)
+	return JsonResponse({'cats':cat_names})
 
 # Add a user favorite
 # Takes in a string (user) and an event object (event)

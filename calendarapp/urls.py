@@ -14,4 +14,7 @@ urlpatterns = [
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('getOrgName/<int:orgPk>/', views.getOrgName, name='getOrgName'),
     path('getEvents', views.getEvents, name='getEvents'),
+	path('getOrganizations', views.getOrganizations, name='getOrganizations'),
+	path('getLocations', views.getLocations, name='getLocations'),
+	path('getCategories', views.getCategories, name='getCategories'),
 ]
