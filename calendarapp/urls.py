@@ -14,4 +14,7 @@ urlpatterns = [
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('getOrgName/<int:orgPk>/', views.getOrgName, name='getOrgName'),
     path('getEvents', views.getEvents, name='getEvents'),
+    path('addFavorite', views.addFavorite, name='addFavorite'),
+    path('createEvent', views.createEvent, name='createEvent'),
+    path('createOrganization', views.createOrganization, name='createOrganization'),
 ]

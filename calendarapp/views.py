@@ -221,24 +221,6 @@ def addFavorite(request):
 	user.favorite_events.add(event)
 	return
 
-# Return a specified user's favorite events
-def getFavorites(request):
-
-	netid = request.GET.get('user')
-
-	# Find user
-	user = User.objects.filter(netid = netid)
-	if len(user != 1): return
-
-	# Turn list into just the one user
-	user = user[0]
-
-	fav_events = user.favorite_events.all()
-
-	# Turn this into a json
-	eventsJson = serialize('json', fav_events)
-
-
 
 def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free, website, description):
 	e = Event(org=org, category=cat, name=name, start_datetime=start_datetime, \
