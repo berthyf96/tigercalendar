@@ -79,6 +79,8 @@ def getEvents(request):
 	org_list = None
 	start_date = None
 	end_date = None
+	netid = None
+	favorites = None
 
 	# comma-deliminated string with list of locations
 	locations = request.GET.get('locations')
@@ -96,10 +98,6 @@ def getEvents(request):
 	is_free = request.GET.get('is_free')
 	if is_free and is_free != "":
 		is_free = request.GET.get('is_free')
-	# should be either empty string or 'true'
-	favorites = request.GET.get('favorites')
-	if favorites and favorites != "":
-		favorites = request.GET.get('favorites')
 	# comma-deliminated string containing date (Y,M,D), i.e. '2018,12,4'
 	start_date_request = request.GET.get('start_date')
 	if start_date_request and start_date_request != "":
@@ -115,10 +113,18 @@ def getEvents(request):
 			end_date = datetime.date(end_date_list[0], end_date_list[1],
 										end_date_list[2])
 
+	# Need to get the netid of the user
+	netid = request.GET.get('user')
+
+	# should be either empty string or 'true'
+	favorites = request.GET.get('favorites')
+	if favorites and favorites != "":
+		favorites = request.GET.get('favorites')
+
 	event_list = filterEvents(locations_list=locations_list, categories_list=categories_list,
-								org_list=org_list, is_free=is_free, favorites = favorites,
-								start_date=start_date, end_date=end_date)
-	print(event_list)
+								org_list=org_list, is_free=is_free, start_date=start_date, 
+								end_date=end_date, netid = netid, favorites = favorites)
+	#print(event_list)
 
 	eventsJson = serialize('json', event_list)
 	# eventsJson = json.loads(eventsJson)
@@ -138,8 +144,24 @@ def getEvents(request):
 
 # return list of filtered events based on parameters
 def filterEvents(locations_list=None, categories_list=None, org_list=None,
-					is_free=None, start_date=None, end_date=None):
+					is_free=None, start_date=None, end_date=None, 
+					netid = None, favorites=None):
+
 	event_list = Event.objects.all()
+
+	if (favorites and favorites == "true"):
+
+		# Find user
+		user = User.objects.filter(netid = netid)
+		if len(user == 1): 
+
+			# Turn list into just the one user
+			user = user[0]
+			event_list = user.favorite_events.all()
+
+			# Do we need to add a corner case for if the user has no
+			# favorites?
+
 	if (locations_list):
 		event_list = event_list.filter(location__in=locations_list)
 	if (categories_list):
@@ -148,12 +170,9 @@ def filterEvents(locations_list=None, categories_list=None, org_list=None,
 		event_list = event_list.filter(org__name__in=org_list)
 	if (is_free and is_free == "true"):
 		event_list = event_list.filter(is_free__exact="True")
-
-	if (favorites and favorites == "true"):
-		event_list = event_list.filter(is_free__exact="True")
-
 	if (start_date and end_date):
 		event_list = event_list.filter(start_datetime__range=(start_date, end_date))
+
 	return event_list
 
 # return all organization names
