@@ -17,4 +17,7 @@ urlpatterns = [
 	path('getOrganizations', views.getOrganizations, name='getOrganizations'),
 	path('getLocations', views.getLocations, name='getLocations'),
 	path('getCategories', views.getCategories, name='getCategories'),
+    path('addFavorite', views.addFavorite, name='addFavorite'),
+    path('createEvent', views.createEvent, name='createEvent'),
+    path('createOrganization', views.createOrganization, name='createOrganization'),
 ]
