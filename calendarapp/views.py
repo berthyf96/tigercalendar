@@ -72,6 +72,7 @@ def getOrgName(request, orgPk):
 
 ## THIS FILTERS THE EVENTS FOR LOCATIONS, FREE BOOLEAN, AND ORGANIZATIONS
 def getEvents(request):
+
 	locations_list = None
 	categories_list = None
 	is_free = None
@@ -95,6 +96,10 @@ def getEvents(request):
 	is_free = request.GET.get('is_free')
 	if is_free and is_free != "":
 		is_free = request.GET.get('is_free')
+	# should be either empty string or 'true'
+	favorites = request.GET.get('favorites')
+	if favorites and favorites != "":
+		favorites = request.GET.get('favorites')
 	# comma-deliminated string containing date (Y,M,D), i.e. '2018,12,4'
 	start_date_request = request.GET.get('start_date')
 	if start_date_request and start_date_request != "":
@@ -111,7 +116,7 @@ def getEvents(request):
 										end_date_list[2])
 
 	event_list = filterEvents(locations_list=locations_list, categories_list=categories_list,
-								org_list=org_list, is_free=is_free,
+								org_list=org_list, is_free=is_free, favorites = favorites,
 								start_date=start_date, end_date=end_date)
 	print(event_list)
 
@@ -143,6 +148,10 @@ def filterEvents(locations_list=None, categories_list=None, org_list=None,
 		event_list = event_list.filter(org__name__in=org_list)
 	if (is_free and is_free == "true"):
 		event_list = event_list.filter(is_free__exact="True")
+
+	if (favorites and favorites == "true"):
+		event_list = event_list.filter(is_free__exact="True")
+
 	if (start_date and end_date):
 		event_list = event_list.filter(start_datetime__range=(start_date, end_date))
 	return event_list
@@ -170,6 +179,46 @@ def getCategories(request):
 	catJson = serialize('json', cat_names)
 	data = {'Category_JSON': catJson}
 	return JsonResponse(data)
+
+# Add a user favorite
+# Takes in a string (user) and an event object (event)
+def addFavorite(request):
+	netid = request.GET.get('user')
+	event = request.GET.get('event')
+
+	# User does not already exists...
+	if not User.objects.filter(netid = netid).exists():
+		new_user = User(netid = netid)
+		new_user.save()
+
+	# Now that user exists, add event to user favorites
+	user = User.objects.filter(netid = netid)
+	if len(user != 1): return
+
+	# Turn list into just the one user
+	user = user[0]
+
+	# Now save the designated event to their favorites
+	user.favorite_events.add(event)
+	return
+
+# Return a specified user's favorite events
+def getFavorites(request):
+
+	netid = request.GET.get('user')
+
+	# Find user
+	user = User.objects.filter(netid = netid)
+	if len(user != 1): return
+
+	# Turn list into just the one user
+	user = user[0]
+
+	fav_events = user.favorite_events.all()
+
+	# Turn this into a json
+	eventsJson = serialize('json', fav_events)
+
 
 
 def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free, website, description):

@@ -15,7 +15,6 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 # Create your models here.
-
 class Organization(models.Model):
     name = models.CharField(max_length=100)
     def __str__(self):
@@ -46,3 +45,10 @@ class Event(models.Model):
     def clean(self):
         if self.start_datetime >= self.end_datetime:
             raise ValidationError('Ending times must after starting times')
+
+class User(models.Model):
+    netid = models.CharField(max_length=100)
+    favorite_events = models.ManyToManyField(Event)
+
+    def __str__(self):
+        return self.netid
