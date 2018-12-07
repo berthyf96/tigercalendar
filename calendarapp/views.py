@@ -14,7 +14,7 @@ import json
 import os
 import CASTest
 from .forms import AddEventForm, AddOrgForm
-from .models import Event, Category, Organization
+from .models import *
 
 # Create your views here.
 def home(request):
