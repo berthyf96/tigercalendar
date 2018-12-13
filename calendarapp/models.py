@@ -48,7 +48,11 @@ class Event(models.Model):
 
 class User(models.Model):
     netid = models.CharField(max_length=100)
-    favorite_events = models.ManyToManyField(Event)
+    favorite_events = models.ManyToManyField(Event, related_name = 'fav_events')
+    admin = models.BooleanField(default=False)
+    my_events = models.ManyToManyField(Event, related_name = 'my_events')
+    my_orgs = models.ManyToManyField(Organization)
+
 
     def __str__(self):
         return self.netid

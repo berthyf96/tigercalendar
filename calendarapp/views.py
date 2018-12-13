@@ -15,6 +15,7 @@ import os
 import CASTest
 from .forms import AddEventForm, AddOrgForm
 from .models import *
+from dateutil.parser import parse 
 
 # Create your views here.
 def home(request):
@@ -36,31 +37,6 @@ def netid(request):
 		return HttpResponse("-")
 	else:
 		return HttpResponse(netid)
-
-# class FormView(generic.TemplateView):
-# 	template_name = 'calendarapp/form.html'
-#
-# 	def get(self, request):
-# 		form = FilterForm()
-# 		return render(request, self.template_name, {'form': form})
-#
-# 	def post(self, request):
-#
-# 		form = FilterForm(request.POST)
-#
-# 		if form.is_valid():
-# 			locations = form.cleaned_data['locations']
-# 			is_free = form.cleaned_data['is_free']
-# 		else:
-# 			print('errors')
-# 			print(form.errors)
-#
-# 		context={
-#     		'form': form,
-#     		'locations': locations,
-# 	    	'is_free': is_free,
-# 		}
-# 		return redirect('calendarapp:filter', context)
 
 # Return name of organization given ID.
 def getOrgName(request, orgPk):
@@ -218,13 +194,65 @@ def addFavorite(request):
 	return
 
 
-def createEvent(org, cat, name, start_datetime, end_datetime, location, is_free, website, description):
-	e = Event(org=org, category=cat, name=name, start_datetime=start_datetime, \
-		end_datetime=end_datetime, location=location, is_free=is_free, website=website, \
-		description=description)
-	e.save()
+def createEvent(request):
 
-def createOrganization(name):
+	name = None
+	org_name = None
+	cat = None
+	start_datetime = None
+	end_datetime = None
+	location = None
+	website = None
+	description = None
+	is_free = None
+
+	# comma-deliminated string with list of locations
+	name = request.GET.get('name')
+	org_name = request.GET.get('org')
+	cat_names = request.GET.get('cat')
+	start = request.GET.get('start_datetime')
+	end = request.GET.get('end_datetime')
+	location = request.GET.get('location')
+	website = request.GET.get('website')
+	description = request.GET.get('description')
+	free = request.GET.get('is_free')
+
+	# Get organizations from names
+	orgs = Organization.objects.filter(name__exact=org_name)
+	org = orgs[0] # Should only be one organization with that name
+
+	# Parse category string into an array, then get the relevant category
+	# objects
+	cat_names_array = cat_names.split(',')
+	cats = Category.objects.filter(name__in = cat_names_array)
+
+	# Parse start and end date/times to the right format
+	start_datetime = parse(start)  
+	end_datetime = parse(end)  
+
+	# Convert string to boolean
+	if free == 'no': is_free = False
+	else is_free = True
+
+	e = Event(org=org, name=name, start_datetime=start_datetime, \
+		end_datetime=end_datetime, is_free=is_free)
+	e.save()
+	
+	e.category.set(cats) # Must set many-to-many field after the fact
+
+	# Set non-required categories if they exist
+	if location != '':
+		e.location = location
+	if description != '':
+		e.description = description
+	if website != '':
+		e.website = website
+
+def createOrganization(request):
+
+	name = None
+	name = request.GET.get('name')
+
 	o = Organization(name=name)
 	o.save()
 
