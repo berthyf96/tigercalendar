@@ -15,7 +15,7 @@ import os
 import CASTest
 from .forms import AddEventForm, AddOrgForm
 from .models import *
-from dateutil.parser import parse 
+from dateutil.parser import parse
 
 # Create your views here.
 def home(request):
@@ -69,7 +69,7 @@ def getEvents(request):
 	# comma-deliminated string with list of orgs
 	orgs = request.GET.get('organizations')
 	if orgs and orgs != "":
-		orgs_list = orgs.split(',')
+		org_list = orgs.split(',')
 	# should be either empty string or 'true'
 	is_free = request.GET.get('is_free')
 	if is_free and is_free != "":
@@ -227,8 +227,8 @@ def createEvent(request):
 	cats = Category.objects.filter(name__in = cat_names_array)
 
 	# Parse start and end date/times to the right format
-	start_datetime = parse(start)  
-	end_datetime = parse(end)  
+	start_datetime = parse(start)
+	end_datetime = parse(end)
 
 	# Convert string to boolean
 	if free == 'no': is_free = False
@@ -237,7 +237,7 @@ def createEvent(request):
 	e = Event(org=org, name=name, start_datetime=start_datetime, \
 		end_datetime=end_datetime, is_free=is_free)
 	e.save()
-	
+
 	e.category.set(cats) # Must set many-to-many field after the fact
 
 	# Set non-required categories if they exist
