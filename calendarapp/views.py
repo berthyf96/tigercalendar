@@ -232,7 +232,7 @@ def createEvent(request):
 
 	# Convert string to boolean
 	if free == 'no': is_free = False
-	else is_free = True
+	else: is_free = True
 
 	e = Event(org=org, name=name, start_datetime=start_datetime, \
 		end_datetime=end_datetime, is_free=is_free)
