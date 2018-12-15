@@ -16,6 +16,7 @@ import CASTest
 from .forms import AddEventForm, AddOrgForm
 from .models import *
 from dateutil.parser import parse
+from django.views.generic.edit import CreateView
 
 # Create your views here.
 def home(request):
@@ -193,7 +194,6 @@ def addFavorite(request):
 	user.favorite_events.add(event)
 	return
 
-
 def createEvent(request):
 
 	name = None
@@ -326,3 +326,9 @@ class AddOrgView(generic.TemplateView):
 
 		args = {'form': form}
 		return render(request, self.template_name, args)
+
+# class AppointmentCreateView(CreateView):
+#     """Powers a form to create a new appointment"""
+
+#     model = Appointment
+#     fields = ['name', 'phone_number', 'time']
