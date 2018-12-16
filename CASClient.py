@@ -14,8 +14,8 @@ class CASClient:
 
     def Authenticate(self):
         
-        # return_url = 'http://localhost:3000/calendar'
-        return_url = 'http://whatsroaring.herokuapp.com/calendar'
+        return_url = 'http://localhost:3000/calendar'
+        # return_url = 'http://whatsroaring.herokuapp.com/calendar'
         # if self.request.session.get('netid'):
         #     print("got here")
         #     return redirect(return_url)
