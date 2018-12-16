@@ -52,8 +52,8 @@ def getEvents(request):
 
 	locations_list = None
 	categories_list = None
-	is_free = None
 	org_list = None
+	is_free = None
 	start_date = None
 	end_date = None
 	netid = None
