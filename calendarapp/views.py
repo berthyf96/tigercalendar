@@ -187,7 +187,7 @@ def addFavorite(request):
 
 	# Now that user exists, add event to user favorites
 	user = User.objects.filter(netid = netid)
-	if len(user != 1): return
+	if len(user) != 1: return
 
 	# Turn list into just the one user
 	user = user[0]
