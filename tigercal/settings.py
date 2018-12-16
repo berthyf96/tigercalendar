@@ -42,7 +42,7 @@ DEBUG = True
 #ALLOWED_HOSTS = ['*']
 #ALLOWED_HOSTS = ['.herokuapp.com'] # Change this later
 ALLOWED_HOSTS = ['whatsroaring-api.herokuapp.com', 
-                 'whatsroaring.herokuapp.com', '127.0.0.1']
+                 'whatsroaring.herokuapp.com', '127.0.0.1', 'localhost']
 
 # Application definition
 
