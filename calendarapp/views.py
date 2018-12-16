@@ -93,7 +93,7 @@ def getEvents(request):
 										end_date_list[2])
 
 	# Need to get the netid of the user
-	netid = request.GET.get('user')
+	netid = request.GET.get('netid')
 
 	# should be either empty string or 'true'
 	favorites = request.GET.get('favorites')
@@ -131,8 +131,8 @@ def filterEvents(locations_list=None, categories_list=None, org_list=None,
 	if (favorites and favorites == "true"):
 
 		# Find user
-		user = User.objects.filter(netid = netid)
-		if len(user == 1):
+		user = User.objects.filter(netid__exact = netid)
+		if len(user) == 1:
 
 			# Turn list into just the one user
 			user = user[0]
