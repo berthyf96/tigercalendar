@@ -14,8 +14,8 @@ class CASClient:
 
     def Authenticate(self):
         
-        return_url = 'http://localhost:3000/calendar'
-        # return_url = 'http://whatsroaring.herokuapp.com/?netid='
+        # return_url = 'http://localhost:3000/calendar'
+        return_url = 'http://whatsroaring.herokuapp.com/calendar'
         # if self.request.session.get('netid'):
         #     print("got here")
         #     return redirect(return_url)
@@ -67,7 +67,8 @@ class CASClient:
 
     def ServiceURL(self):
         if self.request:
-            ret = "http://localhost:8000/login"
+            # ret = "http://localhost:8000/login"
+            ret = "http://whatsroaring-api.herokuapp.com/login"
             # ret = "http://localhost:3000/" #"http://whatsroaring.herokuapp.com/"#self.uri
             ret = re.sub(r'ticket=[^&]*&?', '', ret)
             ret = re.sub(r'\?&?$|&$', '', ret)

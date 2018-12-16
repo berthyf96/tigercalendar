@@ -32,12 +32,14 @@ def login(request):
     return cas.Authenticate()
 
 def netid(request):
-	cas = CASClient(request)
-	netid = cas.Validate(request.GET.get('ticket'))
-	if netid == None:
-		return HttpResponse("-")
-	else:
-		return HttpResponse(netid)
+	# cas = CASClient(request)
+	# netid = cas.Validate(request.GET.get('ticket'))
+	# if netid == None:
+	# 	return HttpResponse("-")
+	# else:
+	# 	return HttpResponse(netid)
+	netid = request.session.get('netid')
+	return render(request, 'calendarapp/netid.html', {'netid': netid})
 
 # Return name of organization given ID.
 def getOrgName(request, orgPk):
