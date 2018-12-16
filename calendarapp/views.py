@@ -189,7 +189,7 @@ def addFavorite(request):
 	start_datetime = parse(start)
 
 	event_set = Event.objects.filter(name__exact = name).filter(start_datetime__exact = start_datetime)
-	if len(event_set) != 1: return
+	if len(event_set) != 1: return HttpResponse("failed")
 
 	event = event_set[0]
 
