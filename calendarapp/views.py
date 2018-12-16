@@ -173,12 +173,25 @@ def getCategories(request):
 	return JsonResponse({'cats':cat_names})
 
 # Add a user favorite
-# Takes in a string (user) and an event object (event)
+# Takes in a string (user)
+# Another string (name)
+# Start date and time (start_datetime)
 def addFavorite(request):
 	netid = request.GET.get('user')
 	if netid is None:
 		netid = 'rb25'
-	event = request.GET.get('event')
+
+	name = request.GET.get('name')
+
+	# Need to parse the start time like we did in the form
+	# Takes in the form Thu, 27 Dec 2018 05:00:00 GMT
+	start = request.GET.get('start_datetime')
+	start_datetime = parse(start)
+
+	event_set = Event.objects.filter(name__exact = name).filter(start_datetime__exact = start_datetime)
+	if len(event_set) != 1: return
+
+	event = event_set[0]
 
 	# User does not already exists...
 	if not User.objects.filter(netid = netid).exists():
