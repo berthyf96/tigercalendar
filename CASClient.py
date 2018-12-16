@@ -1,4 +1,4 @@
-import sys, os, cgi, urllib.parse, re
+import sys, os, cgi, urllib.parse, re, urllib.request
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect, render
 import xml.etree.ElementTree as ET
