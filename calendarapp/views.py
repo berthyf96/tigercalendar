@@ -200,14 +200,14 @@ def addFavorite(request):
 
 	# Now that user exists, add event to user favorites
 	user = User.objects.filter(netid = netid)
-	if len(user) != 1: return
+	if len(user) != 1: return HttpResponse("failed")
 
 	# Turn list into just the one user
 	user = user[0]
 
 	# Now save the designated event to their favorites
 	user.favorite_events.add(event)
-	return
+	return HttpResponse("success")
 
 def createEvent(request):
 
