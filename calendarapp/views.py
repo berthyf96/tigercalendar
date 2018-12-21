@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views import generic
 from django.urls import reverse
 from django.core.serializers import serialize
+from django.views.decorators.csrf import csrf_exempt
 from CASClient import CASClient
 from datetime import datetime
 import json
@@ -209,6 +210,8 @@ def addFavorite(request):
 	user.favorite_events.add(event)
 	return HttpResponse("success")
 
+
+@csrf_exempt
 def createEvent(request):
 
 	name = None
