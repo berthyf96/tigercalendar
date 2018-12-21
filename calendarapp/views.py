@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views import generic
 from django.urls import reverse
 from django.core.serializers import serialize
+from django.views.decorators.csrf import csrf_exempt
 from CASClient import CASClient
 from datetime import datetime
 import json
@@ -209,28 +210,22 @@ def addFavorite(request):
 	user.favorite_events.add(event)
 	return HttpResponse("success")
 
+
+@csrf_exempt
 def createEvent(request):
 
-	name = None
-	org_name = None
-	cat = None
-	start_datetime = None
-	end_datetime = None
-	location = None
-	website = None
-	description = None
-	is_free = None
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
 
-	# comma-deliminated string with list of locations
-	name = request.GET.get('name')
-	org_name = request.GET.get('org')
-	cat_names = request.GET.get('cat')
-	start = request.GET.get('start_datetime')
-	end = request.GET.get('end_datetime')
-	location = request.GET.get('location')
-	website = request.GET.get('website')
-	description = request.GET.get('description')
-	free = request.GET.get('is_free')
+	name = params['name']
+	org_name = params['org']
+	categories = params['cat']
+	start = params['start_datetime']
+	end = params['end_datetime']
+	location = params['location']
+	website = params['website']
+	description = params['description']
+	free = params['is_free']
 
 	# Get organizations from names
 	orgs = Organization.objects.filter(name__exact=org_name)
@@ -238,8 +233,7 @@ def createEvent(request):
 
 	# Parse category string into an array, then get the relevant category
 	# objects
-	cat_names_array = cat_names.split(',')
-	cats = Category.objects.filter(name__in = cat_names_array)
+	cats = Category.objects.filter(name__in=categories)
 
 	# Parse start and end date/times to the right format
 	start_datetime = parse(start)
@@ -262,6 +256,8 @@ def createEvent(request):
 		e.description = description
 	if website != '':
 		e.website = website
+
+	return HttpResponse('Created event')
 
 def createOrganization(request):
 
