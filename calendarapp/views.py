@@ -104,20 +104,26 @@ def getEvents(request):
 	event_list = filterEvents(locations_list=locations_list, categories_list=categories_list,
 								org_list=org_list, is_free=is_free, start_date=start_date,
 								end_date=end_date, netid = netid, favorites = favorites)
-	#print(event_list)
 
 	eventsJson = serialize('json', event_list)
-	# eventsJson = json.loads(eventsJson)
+	eventsDict = json.loads(eventsJson)
+	
+	
+	for i in range(len(eventsDict)):
+		# Replace org ID with org name
+		org_id = eventsDict[i]['fields']['org']
+		org_name = Organization.objects.get(id=org_id).name
+		eventsDict[i]['fields']['org'] = org_name
 
-	# for i in range(0, len(eventsJson)):
-	# 	# Should return org names, not org id's!
-	# 	org_id = eventsJson[i]['fields']['org']
-	# 	eventsJson[i]['fields']['org'] = Organization.objects.get(id=org_id).name
-	#
-	# 	# Should return category names, not category id's!
-	# 	categories = eventsJson[i]['fields']['category']
-	# 	for j in range(0, len(categories)):
-	# 		categories[j] = Category.objects.get(id=categories[j]).name
+		# Replace category ID with category name
+		categories = eventsDict[i]['fields']['category']
+		category_names = []
+		for j in range(len(categories)):
+			category_name = Category.objects.get(id=categories[j]).name
+			category_names.append(category_name)
+		eventsDict[i]['fields']['category'] = category_names
+
+	eventsJson = json.dumps(eventsDict)
 
 	data = {'Events_JSON': eventsJson}
 	return JsonResponse(data)
