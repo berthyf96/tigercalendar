@@ -259,13 +259,17 @@ def createEvent(request):
 
 	return HttpResponse('Created event')
 
+@csrf_exempt
 def createOrganization(request):
 
-	name = None
-	name = request.GET.get('name')
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+	name = params['name']
 
 	o = Organization(name=name)
 	o.save()
+
+	return HttpResponse('Created organization')
 
 class CalView(generic.ListView):
     template_name = 'calendarapp/index.html'
