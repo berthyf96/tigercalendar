@@ -177,3 +177,5 @@ DRAMATIQ_BROKER = {
 # Defines which database should be used to persist Task objects when the
 # AdminMiddleware is enabled.  The default value is "default".
 DRAMATIQ_TASKS_DATABASE = "default"
+
+SESSION_COOKIE_DOMAIN = ".herokuapp.com"
