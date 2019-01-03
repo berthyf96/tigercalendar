@@ -3,7 +3,8 @@
         "node": "10.13.0"
     },
     "dependencies": {
-        "bower": ">=1.8.0"
+        "bower": ">=1.8.0",
+        "json-schema": "^0.2.3"
     },
     "scripts": {
         "prestart": "next build",
