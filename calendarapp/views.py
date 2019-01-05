@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, print_function
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, JsonResponse
@@ -19,6 +19,25 @@ from .models import *
 from dateutil.parser import parse
 from django.views.generic.edit import CreateView
 
+import httplib2
+# from googleapiclient.discovery import build
+# from oauth2client.service_account import ServiceAccountCredentials
+# from oauth2client import crypt
+
+# service_account_email = 'whatsroaring18@whatsroaring.iam.gserviceaccount.com'
+
+# CLIENT_SECRET_FILE = 'pem.p12'
+
+# SCOPES = 'https://www.googleapis.com/auth/calendar'
+# scopes = [SCOPES]
+
+from google.oauth2 import service_account
+import googleapiclient.discovery
+
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+#SERVICE_ACCOUNT_FILE = 'whatsroaring1818_pem.p12'
+SERVICE_ACCOUNT_FILE = 'whatsroaring1818_pem.json'
+
 # Create your views here.
 def home(request):
 
@@ -29,8 +48,8 @@ def home(request):
 	return render(request, 'calendarapp/home.html', {})
 
 def login(request):
-    cas = CASClient(request)
-    return cas.Authenticate()
+	cas = CASClient(request)
+	return cas.Authenticate()
 
 def netid(request):
 	# cas = CASClient(request)
@@ -44,10 +63,10 @@ def netid(request):
 
 # Return name of organization given ID.
 def getOrgName(request, orgPk):
-    org = [Organization.objects.get(pk=orgPk)]
-    json = serialize('json', org)
-    data = {'data': json}
-    return JsonResponse(data)
+	org = [Organization.objects.get(pk=orgPk)]
+	json = serialize('json', org)
+	data = {'data': json}
+	return JsonResponse(data)
 
 
 ## THIS FILTERS THE EVENTS FOR LOCATIONS, FREE BOOLEAN, AND ORGANIZATIONS
@@ -265,6 +284,66 @@ def createEvent(request):
 
 	return HttpResponse('Created event')
 
+# def build_service():
+
+	# credentials = ServiceAccountCredentials.from_p12_keyfile(
+	# 	service_account_email=service_account_email,
+	# 	filename=CLIENT_SECRET_FILE,
+	# 	scopes=SCOPES
+	# )
+
+	# http = credentials.authorize(httplib2.Http())
+
+	# service = build('calendar', 'v3', http=http)
+
+	# return service
+
+def exportToCalendar(request):
+
+	# data = json.loads(request.body.decode('utf-8'))
+	# params = data['params']
+
+	# name = params['name']
+	# start = params['start_datetime']
+	# end = params['end_datetime']
+
+	# # Parse start and end date/times to the right format
+	# start_datetime = parse(start)
+	# end_datetime = parse(end)
+
+	# service = build_service()
+
+	GMT_OFF = '-05:00'
+
+	event = {
+	  'summary': 'Dinner with friends',
+	  'start': {'dateTime': '2019-01-07T09:00:00%s' % GMT_OFF},
+	  'end': {'dateTime': '2019-01-07T11:00:00%s' % GMT_OFF},
+	}
+
+	# #event = service.events().insert(calendarId='beckybarber18@gmail.com', body=event).execute()
+	# event = service.events().insert(calendarId='primary', body=event).execute()
+
+	# print(event)
+
+	# return HttpResponse('success')
+
+	credentials = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+	# http = httplib2.Http()
+	# credentials.authorize(http)
+	# if not credentials.access_token:
+	#     credentials.refresh(http)
+
+	service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
+
+	event = service.events().insert(calendarId='beckybarber18@gmail.com', body=event).execute()
+
+	print(event)
+
+	return HttpResponse('success')
+
 @csrf_exempt
 def createOrganization(request):
 
@@ -278,28 +357,28 @@ def createOrganization(request):
 	return HttpResponse('Created organization')
 
 class CalView(generic.ListView):
-    template_name = 'calendarapp/index.html'
-    context_object_name = 'event_list'
+	template_name = 'calendarapp/index.html'
+	context_object_name = 'event_list'
 
-    def get_queryset(self):
-        return Event.objects.all()
+	def get_queryset(self):
+		return Event.objects.all()
 
 class FilterView(generic.ListView):
-    template_name = 'calendarapp/filter.html'
-    context_object_name = 'event_list'
+	template_name = 'calendarapp/filter.html'
+	context_object_name = 'event_list'
 
-    def get_queryset(self):
-    	locations=['Baker Rink']
-    	is_free=False
-    	orgs=['PUFSC']
-    	event_list = Event.objects.filter(location__in=locations, is_free__exact=is_free,org__name__in=orgs)
-    	return event_list
-    	#return Event.objects.all()
+	def get_queryset(self):
+		locations=['Baker Rink']
+		is_free=False
+		orgs=['PUFSC']
+		event_list = Event.objects.filter(location__in=locations, is_free__exact=is_free,org__name__in=orgs)
+		return event_list
+		#return Event.objects.all()
 
 
 class DetailView(generic.DetailView):
-    model = Event
-    template_name = 'calendarapp/detail.html'
+	model = Event
+	template_name = 'calendarapp/detail.html'
 
 class AddEventView(generic.TemplateView):
 	template_name = 'calendarapp/addevent.html'

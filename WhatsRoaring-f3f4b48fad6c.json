@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "whatsroaring",
+  "private_key_id": "f3f4b48fad6ca8de112e46cecdfa0145136530b7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCPxpwSjuvVo654\nxkNaRwGHNbHaqyPRzmFmaWRaBU2AIhVWqqIEoFfp3oE7MPZMgtainCMbpHKE3nhF\nYmEOIYpUj443S9zIFPxZQBI9cPsLEdbSXKawDNKlGqptV4l+5h8KMyYrX3ZMTAoY\nXf3O0tixeM9MbDmHLnSz8nOZEzy4dis7KtCoI2n8/tHDTcNPjhBsvpowWwOq4tKV\nrM1NyKP64yAXSaxamDb/Jz3lManIAOeXvQdjoa3yLGFOsrdH7LhT+g1ne0KLwnRf\nna/gJDJjcTOiSM//GPubcGxiQwJPXTZtF/DhfyURVfVqlrw0zDleubbmPYkiGd2f\n7G+iat4HAgMBAAECggEAF4XssiKdFkKmAI+bpHEaoGcaFsdKYIDOMcXLi+jzMaQh\n7qCTSoN7bsGfTjJoEcOUX12BZvvkWrXVYrDCZV/6dHRaVdS9JiU81lNjyJasFDcS\neS98fDBU5Ht059fbIJ6A9JfCxnTjc387ZZo3NPgNSRgVfpD0Zpgksu5XmHNry1gX\nU/4OKKtOadI57J0tB9Eg9b4Y8B1fHanQrBn3eWhY/p09UkogvPfp8brVMU+NuL88\npcALjBwgPT+R7G2a8w9OTu1QHeuBbSwfdwmMF8S4hKj9U2tfyIGQVQ8lIKlf5bAz\n1iLGdoIBhJqD2kudls+1vS4n2HDME6E3c10XGRwuLQKBgQDFWVEtN5yUwaAKS+kw\nBYtqiHMWIk/3RfMc8xaQlnGV/6iZ1nCUC0fKRT15okRKbvC7ZD8mQC+hDFdEStzq\nGf+paHd4O0wGlL5c9lNk7UYv65uhZ0q0WdZlnEKBPP6h7Lh/4/uqha+gL1bF4cR/\nX5DczpnBr8CIy3a4aYt10K11cwKBgQC6gVmd7lZE54F/4YPWFGUpZgTCBHY95fh5\nvyBK788KeP8mFYEOHOX97kO0qui3TurSnEM/STMhn9LRNjkEX+Dfi90jv6tpdFvU\nMwKRrtDfHK3hGpDHhlVqTXRGFxXUqsqXFYddKhqCilnN7QmVLBshC4+uMbvXCU+d\n3OsIvIUwHQKBgAnN/jJ46NabKBBa5SL1o4+PZ+hZnA908jcl/KECWHJTWVULSlyQ\nkuiBuCQq46mvCVbGDD0iQzuFGXDTJ1aaJBGOlyDqEUTibvK/ajVBdJM86WaDczqy\nm+xAby1skloJIMF52i8GpUsYDv+Vz+VkIhZWTV1KFg61zRgsZjlcPMHxAoGAN5TS\n61EbHp/LpRvFGWismUDRDC0eO+YsPcQq0IpVLm7Owz/HXThZhmqafN4uSmrXanqt\nQ9ABz/R8dGLvbRFRx+07syqs39mQgFXPXzE1CDjYzOwI151+GRcKHtVEaUOY6pu8\n4pPooJywlMEeiPlDAH8ci7JAo54fvxEWbl0YaDUCgYB4qjlhYKqBGJQQmPMmd7aG\nRxytBijUsBlkeZzkKQsoxImCE48mfHJTJPCOOqjJUV57b75ksFvn/8nTOhD+/So1\nqXDEufgM9v7NNs2cY7+vUXt8EQ56a9gLvuapjb3lKpZ19yAaVlw3JBpFGPeJeOAE\nggSvQdFw4XUxtkKFBEKlgg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "whatsroaring@whatsroaring.iam.gserviceaccount.com",
+  "client_id": "117528478268409177423",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/whatsroaring%40whatsroaring.iam.gserviceaccount.com"
+}

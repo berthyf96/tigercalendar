@@ -20,5 +20,6 @@ urlpatterns = [
     path('addFavorite', views.addFavorite, name='addFavorite'),
     path('createEvent', views.createEvent, name='createEvent'),
     path('createOrganization', views.createOrganization, name='createOrganization'),
+    path('export', views.exportToCalendar, name='export'),
     # path(r'^new$', AppointmentCreateView.as_view(), name='new_appointment'),
 ]
