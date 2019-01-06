@@ -126,8 +126,8 @@ def getEvents(request):
 
 	eventsJson = serialize('json', event_list)
 	eventsDict = json.loads(eventsJson)
-	
-	
+
+
 	for i in range(len(eventsDict)):
 		# Replace org ID with org name
 		org_id = eventsDict[i]['fields']['org']
@@ -338,7 +338,7 @@ def exportToCalendar(request):
 
 	service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
 
-	event = service.events().insert(calendarId='beckybarber18@gmail.com', body=event).execute()
+	event = service.events().insert(calendarId='arielchen232@gmail.com', body=event).execute()
 
 	print(event)
 
