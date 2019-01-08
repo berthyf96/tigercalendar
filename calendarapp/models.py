@@ -30,7 +30,7 @@ class Category(models.Model):
 DEFAULT_ID = 1
 
 class Event(models.Model):
-    org = models.ForeignKey(Organization, on_delete=models.CASCADE, default=DEFAULT_ID)
+    org = models.ForeignKey(Organization, on_delete=models.CASCADE, default=DEFAULT_ID, null=True)
     category = models.ManyToManyField(Category, default=DEFAULT_ID)
     name = models.CharField(max_length=100)
     start_datetime = models.DateTimeField(default=datetime.now)

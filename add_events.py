@@ -1,5 +1,6 @@
-import psycopg2
-from config import config
+from calendarapp.models import *
+import csv
+from sys import *
 
 def add_event(name, org_name, categories, 
 	start, end, location, website, description, free):
@@ -34,33 +35,47 @@ def add_event(name, org_name, categories,
 		e.website = website
 	e.save()
 
-    try:
-        conn = psycopg2.connect()
-        cur = conn.cursor()
+	try:
+		conn = psycopg2.connect()
+		cur = conn.cursor()
 
 
-        # execute the UPDATE  statement
-        cur.execute(sql, (vendor_name, vendor_id))
-        # Commit the changes to the database
-        conn.commit()
-        # Close communication with the PostgreSQL database
-        cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
+		# execute the UPDATE  statement
+		cur.execute(sql, (vendor_name, vendor_id))
+		# Commit the changes to the database
+		conn.commit()
+		# Close communication with the PostgreSQL database
+		cur.close()
+	except (Exception, psycopg2.DatabaseError) as error:
+		print(error)
+	finally:
+		if conn is not None:
+			conn.close()
  
-    return
+	return
 
 def main(argv):
 
+	fname = "63ff5e9642709baf8e9c18047dbb2a8b.csv"
 
+	with open(fname, mode='r') as csv_file:
+		csv_reader = csv.DictReader(csv_file)
+		line_count = 0
+		for row in csv_reader:
+			if line_count == 0:
+				line_count += 1
+			else:
+				line_count += 1
 
-	
+				name = {row["Title"]}
+				if name == '': continue
 
+				start = {row["Start"]}
+				end = {row["End"]}
+				location = {row["Where"]}
 
-
+				print name, ' ', start, ' ', end, ' ', location, ' '
+				
 
 #----------------------------------------------------------------------#	
 
