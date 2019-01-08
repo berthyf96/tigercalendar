@@ -333,24 +333,29 @@ def authenticateUser(request):
 
 	correct = check_password(password, pw_encoded)
 
-	if correct == True: return HttpResponse('True')
-	else: return HttpResponse('False')
+	if correct == False:
+		return HttpResponse('False')
+	else:
+		if user.admin == True:
+			return HttpResponse('Admin')
+		else:
+			return HttpResponse('Not Admin')
 
 
-def isAdmin(request):
+# def isAdmin(request):
 
-	data = json.loads(request.body.decode('utf-8'))
-	params = data['params']
+# 	data = json.loads(request.body.decode('utf-8'))
+# 	params = data['params']
 
-	email = params['email']
+# 	email = params['email']
 
-	users = User.objects.filter(email__exact=email)
-	user = users[0]
+# 	users = User.objects.filter(email__exact=email)
+# 	user = users[0]
 
-	admin = user.admin
+# 	admin = user.admin
 
-	if admin == True: return HttpResponse('True')
-	else: return HttpResponse('False')
+# 	if admin == True: return HttpResponse('True')
+# 	else: return HttpResponse('False')
 
 
 # def build_service():

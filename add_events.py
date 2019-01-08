@@ -56,7 +56,7 @@ def main(argv):
 
 				print(name, ' ', start, ' ', end, ' ', location, ' ', description)
 
-				add_event(name, cats, start, end, location, '', description, True)
+				add_event(name, cats, start, end, '', '', '', True)
 				
 
 #----------------------------------------------------------------------#	
