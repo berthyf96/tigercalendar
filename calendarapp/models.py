@@ -48,15 +48,17 @@ class Event(models.Model):
             raise ValidationError('Ending times must after starting times')
 
 class User(models.Model):
-    netid = models.CharField(max_length=100)
+    username = models.CharField(max_length=100, default = '')
+    password = models.CharField(max_length=100, default = '')
+    first_name = models.CharField(max_length=100, default = '')
+    last_name = models.CharField(max_length=100, default = '')
     favorite_events = models.ManyToManyField(Event, related_name = 'fav_events')
     admin = models.BooleanField(default=False)
     my_events = models.ManyToManyField(Event, related_name = 'my_events')
     my_orgs = models.ManyToManyField(Organization)
 
-
     def __str__(self):
-        return self.netid
+        return self.username
 
 class Appointment(models.Model):
     name = models.CharField(max_length=150)
