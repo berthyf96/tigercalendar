@@ -19,7 +19,7 @@ from .models import *
 from dateutil.parser import parse
 from django.views.generic.edit import CreateView
 
-#import httplib2       UNCOMMENT THIS LATER
+import httplib2
 # from googleapiclient.discovery import build
 # from oauth2client.service_account import ServiceAccountCredentials
 # from oauth2client import crypt
@@ -31,12 +31,13 @@ from django.views.generic.edit import CreateView
 # SCOPES = 'https://www.googleapis.com/auth/calendar'
 # scopes = [SCOPES]
 
-#from google.oauth2 import service_account      UNCOMMENT THIS LATER
-#import googleapiclient.discovery               UNCOMMENT THIS LATER
+from google.oauth2 import service_account
+import googleapiclient.discovery
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 #SERVICE_ACCOUNT_FILE = 'whatsroaring1818_pem.p12'
 SERVICE_ACCOUNT_FILE = 'whatsroaring1818_pem.json'
+#SERVICE_KEY = AIzaSyBcQmNflSd-w_djdLAJDZclPj_ZG5NkbL4
 
 # Create your views here.
 def home(request):
@@ -348,12 +349,15 @@ def exportToCalendar(request):
 
 	service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
 
-	event = service.events().insert(calendarId='arielchen232@gmail.com', body=event).execute()
+	# THIS GIVES AN ERROR
+	# event = service.events().insert(calendarId='beckybarber18@gmail.com', body=event).execute()
+
+	# THIS SUCCEEDS, BUT THE EVENT IS NOT ADDED TO A CALENDAR
+	event = service.events().insert(calendarId='primary', body=event).execute()
 
 	print(event)
 
 	return HttpResponse('success')
-
 @csrf_exempt
 def createOrganization(request):
 
