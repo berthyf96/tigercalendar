@@ -361,10 +361,14 @@ def createOrganization(request):
 	params = data['params']
 	name = params['name']
 
-	o = Organization(name=name)
-	o.save()
+	existing_orgs = Organization.objects.filter(name=name)
 
-	return HttpResponse('Created organization')
+	if (existing_orgs.count() == 0) :
+		o = Organization(name=name)
+		o.save()
+		return HttpResponse('Created organization')
+	else:
+		return HttpResponse('Duplicate organization')
 
 class CalView(generic.ListView):
 	template_name = 'calendarapp/index.html'
