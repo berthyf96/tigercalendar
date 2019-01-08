@@ -18,6 +18,7 @@ from .forms import AddEventForm, AddOrgForm
 from .models import *
 from dateutil.parser import parse
 from django.views.generic.edit import CreateView
+from django.contrib.auth.hashers import *
 
 import httplib2
 # from googleapiclient.discovery import build
@@ -294,6 +295,27 @@ def createEvent(request):
 	e.save()
 
 	return HttpResponse('Created event')
+
+@csrf_exempt
+def addUser(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	first_name = params['first_name']
+	last_name = params['last_name']
+	email = params['email']
+	password = params['password']
+
+	pw_encoded = make_password(password)
+
+	admin = False
+
+	u = User(first_name=first_name, last_name=last_name, email=email, \
+		password = pw_encoded, admin = admin)
+	u.save()
+
+	return HttpResponse('Created user')
 
 # def build_service():
 

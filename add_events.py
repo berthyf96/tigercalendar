@@ -35,10 +35,10 @@ def add_event(name, org_name, categories,
 	e.save()
 
     try:
-        # connect to the PostgreSQL database
         conn = psycopg2.connect()
-        # create a new cursor
         cur = conn.cursor()
+
+
         # execute the UPDATE  statement
         cur.execute(sql, (vendor_name, vendor_id))
         # Commit the changes to the database

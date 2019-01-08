@@ -48,7 +48,7 @@ class Event(models.Model):
             raise ValidationError('Ending times must after starting times')
 
 class User(models.Model):
-    username = models.CharField(max_length=100, default = '')
+    email = models.CharField(max_length=100, default = '')
     password = models.CharField(max_length=100, default = '')
     first_name = models.CharField(max_length=100, default = '')
     last_name = models.CharField(max_length=100, default = '')
