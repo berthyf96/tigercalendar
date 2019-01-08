@@ -331,7 +331,11 @@ def authenticateUser(request):
 
 	pw_encoded = user.password
 
-	return check_password(password, pw_encoded)
+	correct = check_password(password, pw_encoded)
+
+	if correct == True: return HttpResponse('True')
+	else: return HttpResponse('False')
+
 
 def isAdmin(request):
 
@@ -343,7 +347,10 @@ def isAdmin(request):
 	users = User.objects.filter(email__exact=email)
 	user = users[0]
 
-	return user.admin
+	admin = user.admin
+
+	if admin == True: return HttpResponse('True')
+	else: return HttpResponse('False')
 
 
 # def build_service():

@@ -3,15 +3,11 @@ import csv
 from sys import *
 
 def add_event(name, categories, 
-	start, end, location, website, description, free):
+	start_datetime, end_datetime, location, website, description, free):
 
 	# Parse category string into an array, then get the relevant category
 	# objects
 	cats = Category.objects.filter(name__in=categories)
-
-	# Parse start and end date/times to the right format
-	start_datetime = parse(start)
-	end_datetime = parse(end)
 
 	# Convert string to boolean
 	if free == 'No': is_free = False
@@ -32,30 +28,14 @@ def add_event(name, categories,
 		e.website = website
 	e.save()
 
-	try:
-		conn = psycopg2.connect()
-		cur = conn.cursor()
-
-
-		# execute the UPDATE  statement
-		cur.execute(sql, (vendor_name, vendor_id))
-		# Commit the changes to the database
-		conn.commit()
-		# Close communication with the PostgreSQL database
-		cur.close()
-	except (Exception, psycopg2.DatabaseError) as error:
-		print(error)
-	finally:
-		if conn is not None:
-			conn.close()
- 
 	return
 
 def main(argv):
 
-	fname = "63ff5e9642709baf8e9c18047dbb2a8b.csv"
+	fname = "jan7to21v3.csv"
 
 	with open(fname, mode='r') as csv_file:
+
 		csv_reader = csv.DictReader(csv_file)
 		line_count = 0
 		for row in csv_reader:
@@ -64,17 +44,19 @@ def main(argv):
 			else:
 				line_count += 1
 
-				name = {row["Title"]}
+				name = str(row["Title"])
+				if name is None: continue
 				if name == '': continue
 
-				start = {row["Start"]}
-				end = {row["End"]}
-				location = {row["Where"]}
-				cats = {row["Categories"]}
+				start = str(row["Start"])
+				end = str(row["End"])
+				location = str(row["Where"])
+				cats = str(row["Categories"])
+				description = str(row["Description"])
 
-				print name, ' ', start, ' ', end, ' ', location, ' '
+				print(name, ' ', start, ' ', end, ' ', location, ' ', description)
 
-				add_event(name, categories, start, end, location, '', '', True)
+				add_event(name, cats, start, end, location, '', description, True)
 				
 
 #----------------------------------------------------------------------#	
