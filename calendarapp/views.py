@@ -133,7 +133,8 @@ def getEvents(request):
 	for i in range(len(eventsDict)):
 		# Replace org ID with org name
 		org_id = eventsDict[i]['fields']['org']
-		org_name = Organization.objects.get(id=org_id).name
+		if org_id is not None:
+			org_name = Organization.objects.get(id=org_id).name
 		eventsDict[i]['fields']['org'] = org_name
 
 		# Replace category ID with category name
