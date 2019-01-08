@@ -252,6 +252,15 @@ def createEvent(request):
 	description = params['description']
 	free = params['is_free']
 
+	print('name: ' + name)
+	print('org: ' + org_name)
+	print('categories: ' + str(categories))
+	print('start: ' + start)
+	print('end: ' + end)
+	print('location: ' + location)
+	print('website: ' + website)
+	print('description: ' + description)
+	print('free: ' + str(free))
 	# Get organizations from names
 	orgs = Organization.objects.filter(name__exact=org_name)
 	org = orgs[0] # Should only be one organization with that name
@@ -281,6 +290,7 @@ def createEvent(request):
 		e.description = description
 	if website != '':
 		e.website = website
+	e.save()
 
 	return HttpResponse('Created event')
 
