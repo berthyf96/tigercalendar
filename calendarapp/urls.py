@@ -23,6 +23,6 @@ urlpatterns = [
     path('export', views.exportToCalendar, name='export'),
     path('addUser', views.addUser, name='addUser'),
     path('authenticateUser', views.authenticateUser, name='authenticateUser'),
-    path('isAdmin', views.isAdmin, name='isAdmin'),
+    # path('isAdmin', views.isAdmin, name='isAdmin'),
     # path(r'^new$', AppointmentCreateView.as_view(), name='new_appointment'),
 ]

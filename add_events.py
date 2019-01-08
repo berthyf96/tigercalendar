@@ -38,7 +38,9 @@ def main(argv):
 
 		csv_reader = csv.DictReader(csv_file)
 		line_count = 0
+		max = 
 		for row in csv_reader:
+			if line_count > MAX: break
 			if line_count == 0:
 				line_count += 1
 			else:
