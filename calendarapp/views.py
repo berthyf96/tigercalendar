@@ -19,7 +19,7 @@ from .models import *
 from dateutil.parser import parse
 from django.views.generic.edit import CreateView
 
-import httplib2
+#import httplib2       UNCOMMENT THIS LATER
 # from googleapiclient.discovery import build
 # from oauth2client.service_account import ServiceAccountCredentials
 # from oauth2client import crypt
@@ -31,8 +31,8 @@ import httplib2
 # SCOPES = 'https://www.googleapis.com/auth/calendar'
 # scopes = [SCOPES]
 
-from google.oauth2 import service_account
-import googleapiclient.discovery
+#from google.oauth2 import service_account      UNCOMMENT THIS LATER
+#import googleapiclient.discovery               UNCOMMENT THIS LATER
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 #SERVICE_ACCOUNT_FILE = 'whatsroaring1818_pem.p12'
