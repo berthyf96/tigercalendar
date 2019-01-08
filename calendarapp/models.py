@@ -58,7 +58,7 @@ class User(models.Model):
     my_orgs = models.ManyToManyField(Organization)
 
     def __str__(self):
-        return self.username
+        return self.email
 
 class Appointment(models.Model):
     name = models.CharField(max_length=150)

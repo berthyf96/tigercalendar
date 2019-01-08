@@ -317,6 +317,35 @@ def addUser(request):
 
 	return HttpResponse('Created user')
 
+@csrf_exempt
+def authenticateUser(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	email = params['email']
+	password = params['password']
+
+	users = User.objects.filter(email__exact=email)
+	user = users[0]
+
+	pw_encoded = user.password
+
+	return check_password(password, pw_encoded)
+
+def isAdmin(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	email = params['email']
+
+	users = User.objects.filter(email__exact=email)
+	user = users[0]
+
+	return user.admin
+
+
 # def build_service():
 
 	# credentials = ServiceAccountCredentials.from_p12_keyfile(

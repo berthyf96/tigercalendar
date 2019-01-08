@@ -2,11 +2,8 @@ from calendarapp.models import *
 import csv
 from sys import *
 
-def add_event(name, org_name, categories, 
+def add_event(name, categories, 
 	start, end, location, website, description, free):
-
-	orgs = Organization.objects.filter(name__exact=org_name)
-	org = orgs[0] # Should only be one organization with that name
 
 	# Parse category string into an array, then get the relevant category
 	# objects
@@ -20,7 +17,7 @@ def add_event(name, org_name, categories,
 	if free == 'No': is_free = False
 	else: is_free = True
 
-	e = Event(org=org, name=name, start_datetime=start_datetime, \
+	e = Event(org=None, name=name, start_datetime=start_datetime, \
 		end_datetime=end_datetime, is_free=is_free)
 	e.save()
 
@@ -73,8 +70,11 @@ def main(argv):
 				start = {row["Start"]}
 				end = {row["End"]}
 				location = {row["Where"]}
+				cats = {row["Categories"]}
 
 				print name, ' ', start, ' ', end, ' ', location, ' '
+
+				add_event(name, categories, start, end, location, '', '', True)
 				
 
 #----------------------------------------------------------------------#	
