@@ -285,6 +285,7 @@ def createOrganization(request):
 	else:
 		return HttpResponse('Duplicate organization')
 
+@csrf_exempt
 def deleteEvent(request):
 
 	data = json.loads(request.body.decode('utf-8'))
