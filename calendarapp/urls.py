@@ -20,6 +20,7 @@ urlpatterns = [
     path('addFavorite', views.addFavorite, name='addFavorite'),
     path('submitEvent', views.createEvent, name='submitEvent'),
     path('createOrganization', views.createOrganization, name='createOrganization'),
+    path('createEvent', views.createEvent, name='createEvent'),
     # path('export', views.exportToCalendar, name='export'),
     path('addUser', views.addUser, name='addUser'),
     path('authenticateUser', views.authenticateUser, name='authenticateUser'),
