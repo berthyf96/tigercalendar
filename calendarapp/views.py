@@ -245,7 +245,7 @@ def createEvent(request):
 
 	# Check to see if the event exists already
 	# Defined by if there is an event with the same name/start time
-	potential_event = Event.objects.filter(name__exact = name, 
+	potential_event = Event.objects.filter(name__exact = name,
 		start_datetime__exact=start_datetime)
 
 	if potential_event.count() > 0:
@@ -307,12 +307,12 @@ def deleteEvent(request):
 	start = params['start_datetime']
 	start_datetime = parse(start)
 
-	events = Event.objects.filter(name__exact = name, 
+	events = Event.objects.filter(name__exact = name,
 		start_datetime__exact = start_datetime)
 
 	for e in events:
 		e.delete()
-	
+
 	return HttpResponse('Success')
 
 @csrf_exempt
@@ -326,9 +326,9 @@ def addUser(request):
 	email = params['email']
 	password = params['password']
 
-	existing_users = Event.objects.filter(email__exact=email)
+	existing_users = User.objects.filter(email__exact=email)
 
-	if (existing_events.count() > 0):
+	if (existing_users.count() > 0):
 		return HttpResponse('Duplicate user')
 
 	pw_encoded = make_password(password)
@@ -385,6 +385,6 @@ def checkAdminEvent(request):
 	events = user.my_events
 
 	if events.filter(name__exact = name, start_datetime = start_datetime) > 0:
-		return HttpResponse('True') 
+		return HttpResponse('True')
 
-	return HttpResponse('False') 
+	return HttpResponse('False')
