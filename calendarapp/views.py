@@ -365,6 +365,7 @@ def authenticateUser(request):
 		else:
 			return HttpResponse('Not Admin')
 
+@csrf_exempt
 def checkAdminEvent(request):
 
 	data = json.loads(request.body.decode('utf-8'))
@@ -384,7 +385,7 @@ def checkAdminEvent(request):
 
 	events = user.my_events
 
-	if events.filter(name__exact = name, start_datetime = start_datetime) > 0:
+	if len(events.filter(name__exact = name, start_datetime = start_datetime)) > 0:
 		return HttpResponse('True') 
 
 	return HttpResponse('False') 
