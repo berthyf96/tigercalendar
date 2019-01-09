@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    "django_dramatiq",
+    # "django_dramatiq",
 ]
 
 BOWER_INSTALLED_APPS = (
@@ -158,24 +158,24 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-DRAMATIQ_BROKER = {
-    "BROKER": "dramatiq.brokers.redis.RedisBroker",
-    "OPTIONS": {
-        "url": 'redis://localhost:6379/0',
-    },
-    "MIDDLEWARE": [
-        "dramatiq.middleware.Prometheus",
-        "dramatiq.middleware.AgeLimit",
-        "dramatiq.middleware.TimeLimit",
-        "dramatiq.middleware.Callbacks",
-        "dramatiq.middleware.Retries",
-        "django_dramatiq.middleware.AdminMiddleware",
-        "django_dramatiq.middleware.DbConnectionsMiddleware",
-    ]
-}
+# DRAMATIQ_BROKER = {
+#     "BROKER": "dramatiq.brokers.redis.RedisBroker",
+#     "OPTIONS": {
+#         "url": 'redis://localhost:6379/0',
+#     },
+#     "MIDDLEWARE": [
+#         "dramatiq.middleware.Prometheus",
+#         "dramatiq.middleware.AgeLimit",
+#         "dramatiq.middleware.TimeLimit",
+#         "dramatiq.middleware.Callbacks",
+#         "dramatiq.middleware.Retries",
+#         "django_dramatiq.middleware.AdminMiddleware",
+#         "django_dramatiq.middleware.DbConnectionsMiddleware",
+#     ]
+# }
 
 # Defines which database should be used to persist Task objects when the
 # AdminMiddleware is enabled.  The default value is "default".
-DRAMATIQ_TASKS_DATABASE = "default"
+# DRAMATIQ_TASKS_DATABASE = "default"
 
 SESSION_COOKIE_DOMAIN = ".herokuapp.com"

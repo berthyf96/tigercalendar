@@ -365,6 +365,7 @@ def authenticateUser(request):
 		else:
 			return HttpResponse('Not Admin')
 
+@csrf_exempt
 def checkAdminEvent(request):
 
 	data = json.loads(request.body.decode('utf-8'))
