@@ -30,15 +30,15 @@ class Category(models.Model):
 DEFAULT_ID = 1
 
 class Event(models.Model):
-    org = models.ForeignKey(Organization, on_delete=models.CASCADE, default=DEFAULT_ID)
+    org = models.ForeignKey(Organization, on_delete=models.CASCADE, default=DEFAULT_ID, null=True)
     category = models.ManyToManyField(Category, default=DEFAULT_ID)
     name = models.CharField(max_length=100)
     start_datetime = models.DateTimeField(default=datetime.now)
     end_datetime = models.DateTimeField(default=datetime.now)
-    location = models.CharField(max_length=100, null=True, blank=True)  # Better field type?
+    location = models.CharField(max_length=200, null=True, blank=True)  # Better field type?
     is_free = models.BooleanField(default=False)
     website = models.CharField(max_length=200, null=True, blank=True)
-    description = models.CharField(max_length=500, null=True, blank=True)
+    description = models.CharField(max_length=2000, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -48,15 +48,17 @@ class Event(models.Model):
             raise ValidationError('Ending times must after starting times')
 
 class User(models.Model):
-    netid = models.CharField(max_length=100)
+    email = models.CharField(max_length=100, default = '')
+    password = models.CharField(max_length=100, default = '')
+    first_name = models.CharField(max_length=100, default = '')
+    last_name = models.CharField(max_length=100, default = '')
     favorite_events = models.ManyToManyField(Event, related_name = 'fav_events')
     admin = models.BooleanField(default=False)
     my_events = models.ManyToManyField(Event, related_name = 'my_events')
     my_orgs = models.ManyToManyField(Organization)
 
-
     def __str__(self):
-        return self.netid
+        return self.email
 
 class Appointment(models.Model):
     name = models.CharField(max_length=150)

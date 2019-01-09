@@ -18,8 +18,9 @@ from .forms import AddEventForm, AddOrgForm
 from .models import *
 from dateutil.parser import parse
 from django.views.generic.edit import CreateView
+from django.contrib.auth.hashers import *
 
-import httplib2
+# import httplib2
 # from googleapiclient.discovery import build
 # from oauth2client.service_account import ServiceAccountCredentials
 # from oauth2client import crypt
@@ -31,8 +32,8 @@ import httplib2
 # SCOPES = 'https://www.googleapis.com/auth/calendar'
 # scopes = [SCOPES]
 
-from google.oauth2 import service_account
-import googleapiclient.discovery
+# from google.oauth2 import service_account
+# import googleapiclient.discovery
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 #SERVICE_ACCOUNT_FILE = 'whatsroaring1818_pem.p12'
@@ -132,7 +133,8 @@ def getEvents(request):
 	for i in range(len(eventsDict)):
 		# Replace org ID with org name
 		org_id = eventsDict[i]['fields']['org']
-		org_name = Organization.objects.get(id=org_id).name
+		if org_id is not None:
+			org_name = Organization.objects.get(id=org_id).name
 		eventsDict[i]['fields']['org'] = org_name
 
 		# Replace category ID with category name
@@ -278,6 +280,14 @@ def createEvent(request):
 	if free == 'No': is_free = False
 	else: is_free = True
 
+	# Check to see if the event exists already
+	# Defined by if there is an event with the same name/start time
+	potential_event = Event.objects.filter(name__exact = name, 
+		start_datetime__exact=start_datetime)
+
+	if potential_event.count() > 0:
+		return HttpResponse('Event exists')
+
 	e = Event(org=org, name=name, start_datetime=start_datetime, \
 		end_datetime=end_datetime, is_free=is_free)
 	e.save()
@@ -295,6 +305,85 @@ def createEvent(request):
 
 	return HttpResponse('Created event')
 
+def deleteEvent(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	name = params['name']
+	start = params['start_datetime']
+	start_datetime = parse(start)
+
+	events = Event.objects.filter(name__exact = name, 
+		start_datetime__exact = start_datetime)
+
+	for e in events:
+		e.delete()
+	
+	return HttpResponse('Success')
+
+@csrf_exempt
+def addUser(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	first_name = params['first_name']
+	last_name = params['last_name']
+	email = params['email']
+	password = params['password']
+
+	pw_encoded = make_password(password)
+
+	admin = False
+
+	u = User(first_name=first_name, last_name=last_name, email=email, \
+		password = pw_encoded, admin = admin)
+	u.save()
+
+	return HttpResponse('Created user')
+
+@csrf_exempt
+def authenticateUser(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	email = params['email']
+	password = params['password']
+
+	users = User.objects.filter(email__exact=email)
+	user = users[0]
+
+	pw_encoded = user.password
+
+	correct = check_password(password, pw_encoded)
+
+	if correct == False:
+		return HttpResponse('False')
+	else:
+		if user.admin == True:
+			return HttpResponse('Admin')
+		else:
+			return HttpResponse('Not Admin')
+
+
+# def isAdmin(request):
+
+# 	data = json.loads(request.body.decode('utf-8'))
+# 	params = data['params']
+
+# 	email = params['email']
+
+# 	users = User.objects.filter(email__exact=email)
+# 	user = users[0]
+
+# 	admin = user.admin
+
+# 	if admin == True: return HttpResponse('True')
+# 	else: return HttpResponse('False')
+
+
 # def build_service():
 
 	# credentials = ServiceAccountCredentials.from_p12_keyfile(
@@ -309,55 +398,55 @@ def createEvent(request):
 
 	# return service
 
-def exportToCalendar(request):
+# def exportToCalendar(request):
 
-	# data = json.loads(request.body.decode('utf-8'))
-	# params = data['params']
+# 	# data = json.loads(request.body.decode('utf-8'))
+# 	# params = data['params']
 
-	# name = params['name']
-	# start = params['start_datetime']
-	# end = params['end_datetime']
+# 	# name = params['name']
+# 	# start = params['start_datetime']
+# 	# end = params['end_datetime']
 
-	# # Parse start and end date/times to the right format
-	# start_datetime = parse(start)
-	# end_datetime = parse(end)
+# 	# # Parse start and end date/times to the right format
+# 	# start_datetime = parse(start)
+# 	# end_datetime = parse(end)
 
-	# service = build_service()
+# 	# service = build_service()
 
-	GMT_OFF = '-05:00'
+# 	GMT_OFF = '-05:00'
 
-	event = {
-	  'summary': 'Dinner with friends',
-	  'start': {'dateTime': '2019-01-07T09:00:00%s' % GMT_OFF},
-	  'end': {'dateTime': '2019-01-07T11:00:00%s' % GMT_OFF},
-	}
+# 	event = {
+# 	  'summary': 'Dinner with friends',
+# 	  'start': {'dateTime': '2019-01-07T09:00:00%s' % GMT_OFF},
+# 	  'end': {'dateTime': '2019-01-07T11:00:00%s' % GMT_OFF},
+# 	}
 
-	# #event = service.events().insert(calendarId='beckybarber18@gmail.com', body=event).execute()
-	# event = service.events().insert(calendarId='primary', body=event).execute()
+# 	# #event = service.events().insert(calendarId='beckybarber18@gmail.com', body=event).execute()
+# 	# event = service.events().insert(calendarId='primary', body=event).execute()
 
-	# print(event)
+# 	# print(event)
 
-	# return HttpResponse('success')
+# 	# return HttpResponse('success')
 
-	credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+# 	credentials = service_account.Credentials.from_service_account_file(
+#         SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
-	# http = httplib2.Http()
-	# credentials.authorize(http)
-	# if not credentials.access_token:
-	#     credentials.refresh(http)
+# 	# http = httplib2.Http()
+# 	# credentials.authorize(http)
+# 	# if not credentials.access_token:
+# 	#     credentials.refresh(http)
 
-	service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
+# 	service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
 
-	# THIS GIVES AN ERROR
-	# event = service.events().insert(calendarId='beckybarber18@gmail.com', body=event).execute()
+# 	# THIS GIVES AN ERROR
+# 	# event = service.events().insert(calendarId='beckybarber18@gmail.com', body=event).execute()
 
-	# THIS SUCCEEDS, BUT THE EVENT IS NOT ADDED TO A CALENDAR
-	event = service.events().insert(calendarId='primary', body=event).execute()
+# 	# THIS SUCCEEDS, BUT THE EVENT IS NOT ADDED TO A CALENDAR
+# 	event = service.events().insert(calendarId='primary', body=event).execute()
 
-	print(event)
+# 	print(event)
 
-	return HttpResponse('success')
+# 	return HttpResponse('success')
 @csrf_exempt
 def createOrganization(request):
 
