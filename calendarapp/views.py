@@ -20,6 +20,15 @@ from dateutil.parser import parse
 from django.views.generic.edit import CreateView
 from django.contrib.auth.hashers import *
 
+# Create your views here.
+def home(request):
+
+	if request.GET.get('login'):
+		cas = CASClient(request)
+		return cas.Authenticate()
+
+	return render(request, 'calendarapp/home.html', {})
+
 # Return name of organization given ID.
 def getOrgName(request, orgPk):
 	org = [Organization.objects.get(pk=orgPk)]

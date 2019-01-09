@@ -160,15 +160,6 @@ class AddOrgView(generic.TemplateView):
 #     model = Appointment
 #     fields = ['name', 'phone_number', 'time']
 
-# Create your views here.
-def home(request):
-
-	if request.GET.get('login'):
-		cas = CASClient(request)
-		return cas.Authenticate()
-
-	return render(request, 'calendarapp/home.html', {})
-
 def login(request):
 	cas = CASClient(request)
 	return cas.Authenticate()
