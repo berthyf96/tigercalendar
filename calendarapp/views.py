@@ -172,38 +172,25 @@ def getCategories(request):
 # Another string (name)
 # Start date and time (start_datetime)
 def addFavorite(request):
-	netid = request.GET.get('user')
-	if netid is None:
-		netid = 'rb25'
 
-	name = request.GET.get('name')
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
 
-	# Need to parse the start time like we did in the form
-	# Takes in the form Thu, 27 Dec 2018 05:00:00 GMT
-	start = request.GET.get('start_datetime')
+	email = params['email']
+	name = params['name']
+	start = params['start_datetime']
+
 	start_datetime = parse(start)
 
-	event_set = Event.objects.filter(name__exact = name).filter(start_datetime__exact = start_datetime)
-	if len(event_set) != 1: return HttpResponse("failed")
+	users = User.objects.filter(email__exact=email)
+	user = users[0]
 
-	event = event_set[0]
-
-	# User does not already exists...
-	if not User.objects.filter(netid = netid).exists():
-		new_user = User(netid = netid)
-		new_user.save()
-
-	# Now that user exists, add event to user favorites
-	user = User.objects.filter(netid = netid)
-	if len(user) != 1: return HttpResponse("failed")
-
-	# Turn list into just the one user
-	user = user[0]
+	events = Event.objects.filter(name__exact = name, start_datetime__exact = start_datetime)
+	event = events[0]
 
 	# Now save the designated event to their favorites
 	user.favorite_events.add(event)
-	return HttpResponse("success")
-
+	return HttpResponse("Success")
 
 @csrf_exempt
 def createEvent(request):
@@ -385,7 +372,7 @@ def checkAdminEvent(request):
 
 	events = user.my_events
 
-	if events.filter(name__exact = name, start_datetime = start_datetime) > 0:
+	if len(events.filter(name__exact = name, start_datetime = start_datetime)) > 0:
 		return HttpResponse('True')
 
 	return HttpResponse('False')
