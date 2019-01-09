@@ -171,6 +171,7 @@ def getCategories(request):
 # Takes in a string (user)
 # Another string (name)
 # Start date and time (start_datetime)
+@csrf_exempt
 def addFavorite(request):
 
 	data = json.loads(request.body.decode('utf-8'))
