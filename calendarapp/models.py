@@ -35,7 +35,7 @@ class Event(models.Model):
     name = models.CharField(max_length=100)
     start_datetime = models.DateTimeField(default=datetime.now)
     end_datetime = models.DateTimeField(default=datetime.now)
-    location = models.CharField(max_length=100, null=True, blank=True)  # Better field type?
+    location = models.CharField(max_length=200, null=True, blank=True)  # Better field type?
     is_free = models.BooleanField(default=False)
     website = models.CharField(max_length=200, null=True, blank=True)
     description = models.CharField(max_length=2000, null=True, blank=True)

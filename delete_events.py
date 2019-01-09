@@ -41,7 +41,7 @@ def main(argv):
 
 	# 			add_event(name, cats, start, end, '', '', '', True)
 
-	loc = ("jan7to21v3.xlsx") 
+	loc = ("jan22tofeb20.xlsx") 
 
 	wb = xlrd.open_workbook(loc) 
 	sheet = wb.sheet_by_index(0) 
@@ -49,10 +49,6 @@ def main(argv):
 	NUM_LINES = 24
 
 	NAME_COL = 0
-	START_COL = 1
-	END_COL = 1
-	CATS_COL = 6
-	LOC_COL = 5
 
 	for row in range(1, NUM_LINES):
 

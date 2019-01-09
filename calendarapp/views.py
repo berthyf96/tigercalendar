@@ -280,6 +280,14 @@ def createEvent(request):
 	if free == 'No': is_free = False
 	else: is_free = True
 
+	# Check to see if the event exists already
+	# Defined by if there is an event with the same name/start time
+	potential_event = Event.objects.filter(name__exact = name, 
+		start_datetime__exact=start_datetime)
+
+	if potential_event.count() > 0:
+		return HttpResponse('Event exists')
+
 	e = Event(org=org, name=name, start_datetime=start_datetime, \
 		end_datetime=end_datetime, is_free=is_free)
 	e.save()
@@ -296,6 +304,23 @@ def createEvent(request):
 	e.save()
 
 	return HttpResponse('Created event')
+
+def deleteEvent(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	name = params['name']
+	start = params['start_datetime']
+	start_datetime = parse(start)
+
+	events = Event.objects.filter(name__exact = name, 
+		start_datetime__exact = start_datetime)
+
+	for e in events:
+		e.delete()
+	
+	return HttpResponse('Success')
 
 @csrf_exempt
 def addUser(request):
