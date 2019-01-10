@@ -193,6 +193,55 @@ def addFavorite(request):
 	user.favorite_events.add(event)
 	return HttpResponse("Success")
 
+# check if event is favorited
+@csrf_exempt
+def removeFavorite(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	email = params['email']
+	name = params['name']
+	start = params['start_datetime']
+
+	start_datetime = parse(start)
+
+	users = User.objects.filter(email__exact=email)
+	user = users[0]
+
+	events = Event.objects.filter(name__exact = name, start_datetime__exact = start_datetime)
+	event = events[0]
+
+	user.favorite_events.remove(event)
+	return HttpResponse("Success")
+
+# check if event is favorited
+@csrf_exempt
+def checkFavorite(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	email = params['email']
+	name = params['name']
+	start = params['start_datetime']
+
+	start_datetime = parse(start)
+
+	users = User.objects.filter(email__exact=email)
+	user = users[0]
+
+	favorite_events = user.favorite_events.all()
+
+	events = Event.objects.filter(name__exact = name, start_datetime__exact = start_datetime)
+	event = events[0]
+
+	favorited = event in favorite_events
+
+	if favorited == True: return HttpResponse("True")
+	else: return HttpResponse("False")
+
+
 @csrf_exempt
 def createEvent(request):
 
