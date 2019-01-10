@@ -28,6 +28,8 @@ urlpatterns = [
     path('checkAdminEvent', views.checkAdminEvent, name='checkAdminEvent'),
     path('deleteEvent', views.deleteEvent, name='deleteEvent'),
     path('editEvent', views.editEvent, name='editEvent'),
+    path('removeFavorite', views.removeFavorite, name='removeFavorite'),
+    path('checkFavorite', views.checkFavorite, name='checkFavorite'),
     # path('isAdmin', views.isAdmin, name='isAdmin'),
     # path(r'^new$', AppointmentCreateView.as_view(), name='new_appointment'),
 ]
