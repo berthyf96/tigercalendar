@@ -44,9 +44,9 @@ def getEvents(request):
 	categories_list = None
 	org_list = None
 	is_free = None
-	start_date = None
-	end_date = None
-	netid = None
+	# start_date = None
+	# end_date = None
+	email = None
 	favorites = None
 
 	# comma-deliminated string with list of locations
@@ -66,31 +66,35 @@ def getEvents(request):
 	if is_free and is_free != "":
 		is_free = request.GET.get('is_free')
 	# comma-deliminated string containing date (Y,M,D), i.e. '2018,12,4'
-	start_date_request = request.GET.get('start_date')
-	if start_date_request and start_date_request != "":
-		start_date_list = start_date_request.split(',')
-		if len(start_date_list) == 3:
-			start_date = datetime.date(start_date_list[0],
-										start_date_list[1], start_date_list[2])
-	# comma-deliminated string containing date (Y,M,D), i.e. '2018,12,4'
-	end_date_request = request.GET.get('end_date')
-	if (end_date_request and end_date_request != ""):
-		end_date_list = end_date_request.split(',')
-		if len(end_date_list) == 3:
-			end_date = datetime.date(end_date_list[0], end_date_list[1],
-										end_date_list[2])
+	# start_date_request = request.GET.get('start_date')
+	# if start_date_request and start_date_request != "":
+	# 	start_date_list = start_date_request.split(',')
+	# 	if len(start_date_list) == 3:
+	# 		start_date = datetime.date(start_date_list[0],
+	# 									start_date_list[1], start_date_list[2])
+	# # comma-deliminated string containing date (Y,M,D), i.e. '2018,12,4'
+	# end_date_request = request.GET.get('end_date')
+	# if (end_date_request and end_date_request != ""):
+	# 	end_date_list = end_date_request.split(',')
+	# 	if len(end_date_list) == 3:
+	# 		end_date = datetime.date(end_date_list[0], end_date_list[1],
+	# 									end_date_list[2])
 
-	# Need to get the netid of the user
-	netid = request.GET.get('netid')
+	# Need to get the email of the user
+	email = request.GET.get('email')
 
 	# should be either empty string or 'true'
 	favorites = request.GET.get('favorites')
 	if favorites and favorites != "":
 		favorites = request.GET.get('favorites')
 
+	# event_list = filterEvents(locations_list=locations_list, categories_list=categories_list,
+	# 							org_list=org_list, is_free=is_free, start_date=start_date,
+	# 							end_date=end_date, email = email, favorites = favorites)
+
 	event_list = filterEvents(locations_list=locations_list, categories_list=categories_list,
-								org_list=org_list, is_free=is_free, start_date=start_date,
-								end_date=end_date, netid = netid, favorites = favorites)
+								org_list=org_list, is_free=is_free, email = email, 
+								favorites = favorites)
 
 	eventsJson = serialize('json', event_list)
 	eventsDict = json.loads(eventsJson)
@@ -117,24 +121,20 @@ def getEvents(request):
 	return JsonResponse(data)
 
 # return list of filtered events based on parameters
+# def filterEvents(locations_list=None, categories_list=None, org_list=None,
+# 					is_free=None, start_date=None, end_date=None,
+# 					email = None, favorites=None):
+
 def filterEvents(locations_list=None, categories_list=None, org_list=None,
-					is_free=None, start_date=None, end_date=None,
-					netid = None, favorites=None):
+					is_free=None, email = None, favorites=None):
 
 	event_list = Event.objects.all()
 
 	if (favorites and favorites == "true"):
-
 		# Find user
-		user = User.objects.filter(netid__exact = netid)
-		if len(user) == 1:
-
-			# Turn list into just the one user
-			user = user[0]
-			event_list = user.favorite_events.all()
-
-			# Do we need to add a corner case for if the user has no
-			# favorites?
+		user = User.objects.filter(email__exact = email)
+		user = user[0]
+		event_list = user.favorite_events.all()
 
 	if (locations_list):
 		event_list = event_list.filter(location__in=locations_list)
@@ -144,8 +144,8 @@ def filterEvents(locations_list=None, categories_list=None, org_list=None,
 		event_list = event_list.filter(org__name__in=org_list)
 	if (is_free and is_free == "true"):
 		event_list = event_list.filter(is_free__exact="True")
-	if (start_date and end_date):
-		event_list = event_list.filter(start_datetime__range=(start_date, end_date))
+	# if (start_date and end_date):
+	# 	event_list = event_list.filter(start_datetime__range=(start_date, end_date))
 
 	return event_list
 
