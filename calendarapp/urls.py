@@ -27,6 +27,7 @@ urlpatterns = [
     path('authenticateUser', views.authenticateUser, name='authenticateUser'),
     path('checkAdminEvent', views.checkAdminEvent, name='checkAdminEvent'),
     path('deleteEvent', views.deleteEvent, name='deleteEvent'),
+    path('editEvent', views.editEvent, name='editEvent'),
     # path('isAdmin', views.isAdmin, name='isAdmin'),
     # path(r'^new$', AppointmentCreateView.as_view(), name='new_appointment'),
 ]

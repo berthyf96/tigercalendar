@@ -378,3 +378,78 @@ def checkAdminEvent(request):
 		return HttpResponse('True')
 
 	return HttpResponse('False')
+
+@csrf_exempt
+def editEvent(request):
+
+	data = json.loads(request.body.decode('utf-8'))
+	params = data['params']
+
+	old_name = params['old_name']
+	old_starttime = params['old_starttime']
+	name = params['name']
+	org_name = params['org']
+	categories = params['cat']
+	start = params['start_datetime']
+	end = params['end_datetime']
+	location = params['location']
+	website = params['website']
+	description = params['description']
+	free = params['is_free']
+	email = params['email']
+
+	# Parse start and end date/times to the right format
+	old_starttime = parse(old_starttime)
+	start_datetime = parse(start)
+	end_datetime = parse(end)
+
+	# Check to see if the event exists already
+	# Defined by if there is an event with the same name/start time
+	potential_event = Event.objects.filter(name__exact = name,
+		start_datetime__exact=start_datetime)
+
+	# If either the name or the start date/time changed, then 
+	# Check to make sure the new event doesn't already exist
+	if old_name != name or old_starttime != start_datetime:
+		if potential_event.count() > 0:
+			return HttpResponse('Duplicate event')
+
+	# Get the old event
+	events = Event.objects.filter(name__exact=old_name, start_datetime__exact=old_starttime)
+	event = events[0]
+
+	# Get organizations from names
+	orgs = Organization.objects.filter(name__exact=org_name)
+	org = orgs[0] # Should only be one organization with that name
+
+	# Parse category string into an array, then get the relevant category
+	# objects
+	cats = Category.objects.filter(name__in=categories)
+
+	# Convert string to boolean
+	if free == 'No': is_free = False
+	else: is_free = True
+
+	event.name = name
+	event.org = org
+	event.start_datetime = start_datetime
+	event.end_datetime = end_datetime
+	event.free = free
+	event.location = location
+	event.description = description
+	event.website = website
+
+	# In case the user deleted the location, description, or website
+	if location == '':
+		event.location = None
+	if description == '':
+		event.description = None
+	if website == '':
+		event.website = None
+	
+	event.save()
+
+	e.category.set(cats) # Must set many-to-many field after the fact
+	event.save()
+
+	return HttpResponse('Edited event')
