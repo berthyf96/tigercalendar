@@ -389,6 +389,9 @@ def authenticateUser(request):
 	password = params['password']
 
 	users = User.objects.filter(email__exact=email)
+	if (users.count() == 0):
+		return HttpResponse('False')
+		
 	user = users[0]
 
 	pw_encoded = user.password
