@@ -41,22 +41,28 @@ def main(argv):
 
 	# 			add_event(name, cats, start, end, '', '', '', True)
 
-	loc = ("jan22tofeb20.xlsx") 
+	# loc = ("jan22tofeb20.xlsx") 
 
-	wb = xlrd.open_workbook(loc) 
-	sheet = wb.sheet_by_index(0) 
+	# wb = xlrd.open_workbook(loc) 
+	# sheet = wb.sheet_by_index(0) 
 
-	NUM_LINES = 24
+	# NUM_LINES = 24
 
-	NAME_COL = 0
+	# NAME_COL = 0
 
-	for row in range(1, NUM_LINES):
+	# for row in range(1, NUM_LINES):
 
-		name = str(sheet.cell_value(row, NAME_COL))
-		if name is None: continue
-		if name == '': continue
+	# 	name = str(sheet.cell_value(row, NAME_COL))
+	# 	if name is None: continue
+	# 	if name == '': continue
 
+	# 	delete_event(name)
+
+	NUM_EVENTS = 1000
+	for i in range(1, NUM_EVENTS):
+		name = 'test' + str(i)
 		delete_event(name)
+		print(i)
 
 #----------------------------------------------------------------------#	
 

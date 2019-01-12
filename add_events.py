@@ -34,64 +34,45 @@ def add_event(name, categories,
 
 def main(argv):
 
-	# fname = "jan7to21v3.xslx"
+	# loc = ("jan22tofeb20.xlsx") 
 
-	# with open(fname, mode='r') as csv_file:
+	# wb = xlrd.open_workbook(loc) 
+	# sheet = wb.sheet_by_index(0) 
 
-	# 	csv_reader = csv.DictReader(csv_file)
-	# 	line_count = 0
-	# 	MAX = 10
-	# 	for row in csv_reader:
-	# 		if line_count > MAX: break
-	# 		if line_count == 0:
-	# 			line_count += 1
-	# 		else:
-	# 			line_count += 1
+	# NUM_LINES = 85
+	# # NUM_LINES = 24
 
-	# 			name = str(row["Title"])
-	# 			if name is None: continue
-	# 			if name == '': continue
+	# NAME_COL = 0
+	# START_COL = 1
+	# END_COL = 2
+	# DESC_COL = 4
+	# LOC_COL = 5
+	# CATS_COL = 6
 
-	# 			start = str(row["Start"])
-	# 			end = str(row["End"])
-	# 			location = str(row["Where"])
-	# 			cats = str(row["Categories"])
-	# 			description = str(row["Description"])
+	# for row in range(1, NUM_LINES):
 
-	# 			print(name, ' ', start, ' ', end, ' ', location, ' ', description)
+	# 	name = str(sheet.cell_value(row, NAME_COL))
+	# 	if name is None: continue
+	# 	if name == '': continue
 
-	# 			add_event(name, cats, start, end, '', '', '', True)
+	# 	start = str(sheet.cell_value(row, START_COL))
+	# 	end = str(sheet.cell_value(row, END_COL))
+	# 	location = str(sheet.cell_value(row, LOC_COL))
+	# 	description = str(sheet.cell_value(row, DESC_COL))
+	# 	cats = str(sheet.cell_value(row, CATS_COL))
 
-	loc = ("jan22tofeb20.xlsx") 
+	# 	print(name, ' ', start, ' ', end, ' ', location)
 
-	wb = xlrd.open_workbook(loc) 
-	sheet = wb.sheet_by_index(0) 
+	# 	add_event(name, cats, start, end, location, '', description, True)
 
-	NUM_LINES = 85
-	# NUM_LINES = 24
+	NUM_EVENTS = 1000
+	for i in range(1, NUM_EVENTS):
+		name = 'test' + str(i)
+		start = '2019-02-21 10:00'
+		end =  '2019-02-21 12:00'
+		print(i)
 
-	NAME_COL = 0
-	START_COL = 1
-	END_COL = 2
-	DESC_COL = 4
-	LOC_COL = 5
-	CATS_COL = 6
-
-	for row in range(1, NUM_LINES):
-
-		name = str(sheet.cell_value(row, NAME_COL))
-		if name is None: continue
-		if name == '': continue
-
-		start = str(sheet.cell_value(row, START_COL))
-		end = str(sheet.cell_value(row, END_COL))
-		location = str(sheet.cell_value(row, LOC_COL))
-		description = str(sheet.cell_value(row, DESC_COL))
-		cats = str(sheet.cell_value(row, CATS_COL))
-
-		print(name, ' ', start, ' ', end, ' ', location)
-
-		add_event(name, cats, start, end, location, '', description, True)
+		add_event(name, [], start, end, '', '', '', True)
 
 #----------------------------------------------------------------------#	
 
