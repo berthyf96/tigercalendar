@@ -501,7 +501,7 @@ def editEvent(request):
 	
 	event.save()
 
-	e.category.set(cats) # Must set many-to-many field after the fact
+	event.category.set(cats) # Must set many-to-many field after the fact
 	event.save()
 
 	return HttpResponse('Edited event')
