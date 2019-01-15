@@ -277,8 +277,10 @@ def createEvent(request):
 	cats = Category.objects.filter(name__in=categories)
 
 	# Convert string to boolean
-	if free == 'No': is_free = False
-	else: is_free = True
+	print(free)
+	free = str(free)
+	if free == 'False': is_free = False
+	elif free == 'True': is_free = True
 
 	# Check to see if the event exists already
 	# Defined by if there is an event with the same name/start time
@@ -479,14 +481,17 @@ def editEvent(request):
 	cats = Category.objects.filter(name__in=categories)
 
 	# Convert string to boolean
-	if free == 'No': is_free = False
-	else: is_free = True
+	print(free)
+	free = str(free)
+	if free == 'False': is_free = False
+	elif free == 'True': is_free = True
+	print(is_free)
 
 	event.name = name
 	event.org = org
 	event.start_datetime = start_datetime
 	event.end_datetime = end_datetime
-	event.free = free
+	event.is_free = is_free
 	event.location = location
 	event.description = description
 	event.website = website
